@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>regression on Mackenzie Qu Website</title>
+    <link>/tags/regression/</link>
+    <description>Recent content in regression on Mackenzie Qu Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 22 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/regression/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multiple linear regression: A data driven approach to predicting midseason NBA point spreads</title>
+      <link>/post/nba-prediction/</link>
+      <pubDate>Tue, 22 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/nba-prediction/</guid>
+      <description>Abstract Basketball has gained millions of passionate fans over the years, and its intensity often extends beyond the courts into various bets.</description>
+    </item>
+    
+    <item>
+      <title>Multilevel Regression with Post Stratification: popular vote points to the victory of Joe Biden</title>
+      <link>/post/us-election/</link>
+      <pubDate>Tue, 03 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/us-election/</guid>
+      <description>Abstract The result of the 2020 presidential election in the US has been a pressing topic.</description>
+    </item>
+    
+    <item>
+      <title>Bayesian binary regression model: a link between childhood maltreatment and aduldhood victimization</title>
+      <link>/post/victimization/</link>
+      <pubDate>Sat, 17 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/victimization/</guid>
+      <description>Abstract Childhood abuse and maltreatment have been determined to increase the risk of criminal behavior.</description>
+    </item>
+    
+  </channel>
+</rss>

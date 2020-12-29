@@ -1,0 +1,2505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme=""><head>
+    <title> Mackenzie Qu | Multiple linear regression: A data driven approach to predicting midseason NBA point spreads </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.79.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Academic Paper and Blogs">
+    
+    <link rel="stylesheet"
+          href="/css/style.min.28b1ee64753ae7e3e46327acb742498816170bd217640dd4bf69240697a4d5e4.css"
+          integrity="sha256-KLHuZHU65&#43;PkYyest0JJiBYXC9IXZA3Uv2kkBpek1eQ="
+          crossorigin="anonymous"
+          type="text/css">
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.9755453ffb7bc4cd220f86ebb5922107b49f193cc62fc17e9785d27b33a8bf5b.css"
+        integrity="sha256-l1VFP/t7xM0iD4brtZIhB7SfGTzGL8F&#43;l4XSezOov1s="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+
+    
+    <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/nba-prediction/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.e782db136ec18d105a4552702eac49f4620d6867da3fbf808bd53e806c96be6e.js"
+            integrity="sha256-54LbE27BjRBaRVJwLqxJ9GINaGfaP7&#43;Ai9U&#43;gGyWvm4="
+            crossorigin="anonymous"></script>
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Multiple linear regression: A data driven approach to predicting midseason NBA point spreads"/>
+<meta name="twitter:description" content="Abstract Basketball has gained millions of passionate fans over the years, and its intensity often extends beyond the courts into various bets."/>
+
+</head>
+<body><div class="sidebar animated fadeInDown ">
+    <div class="logo-title">
+        <div class="title">
+            <img src="/images/prof.JPG" alt="profile picture">
+            <h3 title=""><a href="/">Mackenzie&#39;s Website</a></h3>
+            <div class="description">
+                <p>Academic Paper and Blogs</p>
+            </div>
+        </div>
+    </div>
+    <ul class="social-links">
+        
+            <li>
+                <a href="https://www.linkedin.com/in/mackenzie-qu-4864a91a2/" rel="me" aria-label="Linkedin">
+                    <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://github.com/mackenziequ" rel="me" aria-label="GitHub">
+                    <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://www.instagram.com/" rel="me" aria-label="instagram">
+                    <i class="fab fa-instagram fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="mailto:mackenzie.qu@mail.utoronto.ca" rel="me" aria-label="e-mail">
+                    <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+    </ul>
+    <div class="footer">
+        <div class="by_farbox">&copy; Mackenzie Qu 2020 </div>
+    </div>
+</div>
+
+
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <div class="main">
+    <div class="page-top  animated fadeInDown ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <ul class="nav" id="navMenu">
+        
+        
+            
+            <li><a 
+                   href="/"
+                        
+                   title="">Home</a></li>
+        
+            
+            <li><a 
+                   href="/post/"
+                        
+                   title="">Posts</a></li>
+        
+            
+            <li><a 
+                   href="/about/"
+                        
+                   title="">About</a></li>
+        
+            
+            <li><a 
+                   href="/contact/"
+                        
+                   title="">Contact</a></li>
+        
+        
+        <li class="theme-switch-item">
+            <a class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+    <div class="autopagerize_page_element">
+        <div class="content">
+    <div class="post  animated fadeInDown ">
+        <div class="post-content">
+            <div class="post-title">
+                <h3>Multiple linear regression: A data driven approach to predicting midseason NBA point spreads</h3>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date">Tue, Dec 22, 2020</span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">25-minute read</span>
+                    </div>
+                
+            </div>
+
+            
+
+
+<div id="abstract" class="section level1">
+<h1>Abstract</h1>
+<p>Basketball has gained millions of passionate fans over the years, and its intensity often extends beyond the courts into various bets. For the purpose of predicting pointspread outcome for any midseason NBA games, a multiple linear regression model is developed using team’s previous game stats from the same season. The model is then tested using randomly selected midseason games from 2015. Our model for pointspread is also applicable with regards to predicting the Money Line outcome, which may provide an overview of the upcoming season betting lines.</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>From the squeak of sneakers on the court to the cheers of fans from the bleachers, the excitement of basketball lies within its fast and unpredictable nature, which gratifies a massive crowd of gamblers. As the NBA remains to be the best basketball league in the world, its betting market also holds significant value. The NBA is composed of 30 teams; each team plays 82 games for a regular season which provides 1230 opportunities for gamblers to cash in. Each game is divided by 4 even quarters with the possibility of overtime if the result was a tie. Upon research, the online betting pool does not close until the fourth quarter, indicating that information gathered during the first three quarters of the game could be crucial.</p>
+<p>In this paper, we are interested in predicting the outcome of two popular bets - the Point Spread and the Money Line. As the most popular wager, the Money Line simply allows one to bet on a desired team to win. A more intriguing bet on point spread is when one bets on a team to win by a specific number or not lose more than that number. In this paper, we have chosen to predict the Point Spread, which includes the Money Line outcome by experimenting with multiple linear regression models, hoping to predict a profitable betting line on the spreads of NBA games.</p>
+<p>For the purpose of this paper, two datasets containing the actual NBA game statistics (<span class="citation">Kelepouris (2018)</span>)(<span class="citation">rLoper (2020)</span>) are used to assist the model development. The data includes all games in a regular season, along with game stats such as field goal percentage and 3 point percentage generated by each team. We have chosen to use the cumulative average of field goal percentage, 3 point percentage, free throw percentage, total rebounds, assists, turnovers, as well as the total points until the third quarter as predictor variables. Our model for point spread has a residual standard error of 7.139, which is inadequate in accuracy in comparison to the betting lines. However, the accuracy for predicting the winning team appears to be significant through verification. The data wrangling and model for this paper is done using statistical language <span class="citation">R Core Team (2020)</span> in Rmarkdown(<span class="citation">Allaire et al. (2020)</span>)(<span class="citation">Xie, Allaire, and Grolemund (2018)</span>)(<span class="citation">Xie, Dervieux, and Riederer (2020)</span>). To reproduce the result, code can be accessed at: “<a href="https://github.com/mackenziequ/NBA-prediction" class="uri">https://github.com/mackenziequ/NBA-prediction</a>”.</p>
+<p>The results are able to predict point-spread and winning margin in the upcoming NBA season for all purposes. However, the model is not sufficient enough to achieve the accuracy of the NBA Point Spread betting lines chosen by professional oddsmakers due to basketball’s unpredictable nature. Our model could be significantly improved by replacing the cumulative averages with actual in game data by the third quarter. The rest of the report proceeds as follows. Section 2 describes the historical NBA data we have used to develop and verify the models, including some adjustments made. In section 3, we demonstrate the model development, aiming to provide a statistical reasoning behind the results. Section 4 shows the result of the models and verifies the model performance through randomly selected games and their betting lines respectively. In which the results will be discussed thoroughly in section 5, as well as some potential weaknesses and future work.</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>With the intention of predicting the NBA game results, we have chosen two self-contained NBA datasets available on Kaggel. Both datasets are observational, in which it is gathered from historical NBA games in full measure. From all the historical data, we have sampled the 2014-2015 season for model training purposes. The 2014-2015 season has in total 1230 games, the datasets however, both contain 2460 variables as each game is recorded twice for both the home team and the away team. Though the complete historical data of each team may seem useful, we have chosen to not include any historical data from season 2013-2014 due to players’ leave or trade, which will result in significant differences in a team’s performance.</p>
+<div id="nba-team-game-stats-from-2014-to-2018---data" class="section level2">
+<h2>“NBA Team Game Stats from 2014 to 2018” - Data</h2>
+<p>“NBA Team Game Stats from 2014 to 2018” (<span class="citation">Kelepouris (2018)</span>) contains information of every NBA game played in 2014-2018. The dataset was mined from basketball reference(<span class="citation">(<em>Basketball Statistics and History</em> 2020)</span>) and published in Kaggle. Its main focus are the points and game stats for both home and away teams in a game, and it contains the main predictor variables in the model. However, some variables, such as off-rebounds and assists are not used as they do not have a significant impact on the points made in a game.
+The dataset is beneficial such that it is well organized, and majority of the variables contribute to the total points gained in a game. However, it is limited to the results of a game, in which some of the variables have to be altered for model fitting since we would not have any knowledge of the outcome prior to the game.
+Therefore, we have calculated and attached the cumulative averages of the Field Goal Percent, Three Point Percent, Free ThrowPercent, Total Rebounds, and Turnovers for each team before the game. This allows us to develop an actual prediction model of the game results without any information of the outcomes. We have also added point spread as the difference of two team’s total points into the dataset for modeling purposes, which can be seen from the preview of the data(Table <a href="#tab:teamstats">1</a>).</p>
+</div>
+<div id="nba-stats-complete-with-player-stats---data" class="section level2">
+<h2>“1996-2019 NBA Stats Complete With Player Stats” - Data</h2>
+<p>“1996-2019 NBA Stats Complete With Player Stats”(<span class="citation">rLoper (2020)</span>) created by another Kaggle contributor contains NBA game statistics with a more detailed approach. In addition to the team stats for each game, player stats are also included which makes in total 142 variables. However, we have only chosen the most favorable variable for our model - points gained in each quarter. Though basketball games are fast-paced, and the result may change drastically in any given minute, this data gives us a better understanding of the in-game statistics and performance of each team; which is proven significant for the prediction.</p>
+<p>For the purpose of our model, we simply added the points gained in the first three quarters for each game played by each team; the players stats and other variables for each game are not used since it will create too many categorical variables in the model with little significance. In addition, from the preview of the cleaned data(Table <a href="#tab:midstats">2</a>), it is shown that we have kept the date and team for merging purposes. Note that all variables from the preceding dataset is included, however, this data has presented more obstacles during the data cleaning process thus was not chosen.</p>
+<p>Upon merging the two datasets by date and team, we have a complete dataset containing all the variables needed for visualization and modeling. Note that the dataset only contains games after the midseason, as we will provide the reasoning below.</p>
+<div style="page-break-after: always;"></div>
+<table>
+<caption>
+<span id="tab:teamstats">Table 1: </span>NBA Team Game Stats from 2014 to 2018 - 2014 data preview
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:left;">
+Opponent
+</th>
+<th style="text-align:left;">
+Home
+</th>
+<th style="text-align:right;">
+Game
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+WINorLOSS
+</th>
+<th style="text-align:right;">
+PointSpread
+</th>
+<th style="text-align:right;">
+TeamPoints
+</th>
+<th style="text-align:right;">
+OpponentPoints
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+TOR
+</td>
+<td style="text-align:left;">
+Away
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2014-10-29
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-7
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+109
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+IND
+</td>
+<td style="text-align:left;">
+Home
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2014-11-01
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+102
+</td>
+<td style="text-align:right;">
+92
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+SAS
+</td>
+<td style="text-align:left;">
+Away
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2014-11-05
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-2
+</td>
+<td style="text-align:right;">
+92
+</td>
+<td style="text-align:right;">
+94
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+CHO
+</td>
+<td style="text-align:left;">
+Away
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2014-11-07
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+-3
+</td>
+<td style="text-align:right;">
+119
+</td>
+<td style="text-align:right;">
+122
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+NYK
+</td>
+<td style="text-align:left;">
+Home
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+2014-11-08
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+103
+</td>
+<td style="text-align:right;">
+96
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+NYK
+</td>
+<td style="text-align:left;">
+Away
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2014-11-10
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+85
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+FieldGoalPercent
+</th>
+<th style="text-align:right;">
+OppFieldGoalPercent
+</th>
+<th style="text-align:right;">
+ThreePointPercent
+</th>
+<th style="text-align:right;">
+OppThreePointPercent
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.500
+</td>
+<td style="text-align:right;">
+0.411
+</td>
+<td style="text-align:right;">
+0.591
+</td>
+<td style="text-align:right;">
+0.308
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.507
+</td>
+<td style="text-align:right;">
+0.383
+</td>
+<td style="text-align:right;">
+0.350
+</td>
+<td style="text-align:right;">
+0.375
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.413
+</td>
+<td style="text-align:right;">
+0.449
+</td>
+<td style="text-align:right;">
+0.320
+</td>
+<td style="text-align:right;">
+0.294
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.462
+</td>
+<td style="text-align:right;">
+0.495
+</td>
+<td style="text-align:right;">
+0.394
+</td>
+<td style="text-align:right;">
+0.286
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.407
+</td>
+<td style="text-align:right;">
+0.476
+</td>
+<td style="text-align:right;">
+0.409
+</td>
+<td style="text-align:right;">
+0.381
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.380
+</td>
+<td style="text-align:right;">
+0.434
+</td>
+<td style="text-align:right;">
+0.370
+</td>
+<td style="text-align:right;">
+0.231
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+FreeThrowPercent
+</th>
+<th style="text-align:right;">
+OppFreeThrowPercent
+</th>
+<th style="text-align:right;">
+TotalRebounds
+</th>
+<th style="text-align:right;">
+OppTotalRebound
+</th>
+<th style="text-align:right;">
+Turnovers
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+0.529
+</td>
+<td style="text-align:right;">
+0.818
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+17
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.758
+</td>
+<td style="text-align:right;">
+0.857
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.727
+</td>
+<td style="text-align:right;">
+0.711
+</td>
+<td style="text-align:right;">
+37
+</td>
+<td style="text-align:right;">
+50
+</td>
+<td style="text-align:right;">
+13
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.769
+</td>
+<td style="text-align:right;">
+0.741
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+19
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.778
+</td>
+<td style="text-align:right;">
+0.727
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.964
+</td>
+<td style="text-align:right;">
+0.583
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+15
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+OppTurnover
+</th>
+<th style="text-align:right;">
+AvgTeamPoints
+</th>
+<th style="text-align:right;">
+AvgOppPoints
+</th>
+<th style="text-align:right;">
+AvgFieldGoalPercent
+</th>
+<th style="text-align:right;">
+AvgOppFieldGoalPercent
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+102.00000
+</td>
+<td style="text-align:right;">
+109.00000
+</td>
+<td style="text-align:right;">
+0.5000000
+</td>
+<td style="text-align:right;">
+0.4110000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+102.00000
+</td>
+<td style="text-align:right;">
+100.50000
+</td>
+<td style="text-align:right;">
+0.5035000
+</td>
+<td style="text-align:right;">
+0.3970000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+98.66667
+</td>
+<td style="text-align:right;">
+98.33333
+</td>
+<td style="text-align:right;">
+0.4733333
+</td>
+<td style="text-align:right;">
+0.4143333
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+103.75000
+</td>
+<td style="text-align:right;">
+104.25000
+</td>
+<td style="text-align:right;">
+0.4705000
+</td>
+<td style="text-align:right;">
+0.4345000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+103.60000
+</td>
+<td style="text-align:right;">
+102.60000
+</td>
+<td style="text-align:right;">
+0.4578000
+</td>
+<td style="text-align:right;">
+0.4428000
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+AvgThreePointPercent
+</th>
+<th style="text-align:right;">
+AvgOppThreePointPercent
+</th>
+<th style="text-align:right;">
+AvgFreeThrowPercent
+</th>
+<th style="text-align:right;">
+AvgOppFreeThrowPercent
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.5910000
+</td>
+<td style="text-align:right;">
+0.3080000
+</td>
+<td style="text-align:right;">
+0.5290000
+</td>
+<td style="text-align:right;">
+0.8180000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.4705000
+</td>
+<td style="text-align:right;">
+0.3415000
+</td>
+<td style="text-align:right;">
+0.6435000
+</td>
+<td style="text-align:right;">
+0.8375000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.4203333
+</td>
+<td style="text-align:right;">
+0.3256667
+</td>
+<td style="text-align:right;">
+0.6713333
+</td>
+<td style="text-align:right;">
+0.7953333
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.4137500
+</td>
+<td style="text-align:right;">
+0.3157500
+</td>
+<td style="text-align:right;">
+0.6957500
+</td>
+<td style="text-align:right;">
+0.7817500
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0.4128000
+</td>
+<td style="text-align:right;">
+0.3288000
+</td>
+<td style="text-align:right;">
+0.7122000
+</td>
+<td style="text-align:right;">
+0.7708000
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:right;">
+AvgTotalRebounds
+</th>
+<th style="text-align:right;">
+AvgOppTotalRebounds
+</th>
+<th style="text-align:right;">
+AvgTurnovers
+</th>
+<th style="text-align:right;">
+AvgOppTurnovers
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+<td style="text-align:right;">
+NaN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+42.00000
+</td>
+<td style="text-align:right;">
+48.00000
+</td>
+<td style="text-align:right;">
+17.00
+</td>
+<td style="text-align:right;">
+9.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+39.50000
+</td>
+<td style="text-align:right;">
+46.00000
+</td>
+<td style="text-align:right;">
+14.50
+</td>
+<td style="text-align:right;">
+13.50000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+38.66667
+</td>
+<td style="text-align:right;">
+47.33333
+</td>
+<td style="text-align:right;">
+14.00
+</td>
+<td style="text-align:right;">
+15.33333
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+38.50000
+</td>
+<td style="text-align:right;">
+48.25000
+</td>
+<td style="text-align:right;">
+15.25
+</td>
+<td style="text-align:right;">
+16.25000
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+39.00000
+</td>
+<td style="text-align:right;">
+47.40000
+</td>
+<td style="text-align:right;">
+13.80
+</td>
+<td style="text-align:right;">
+16.00000
+</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<table>
+<caption>
+<span id="tab:midstats">Table 2: </span>1996-2019 NBA Stats Complete With Player Stats - 2014 data preview
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:right;">
+third_quarter_score
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+ORL
+</td>
+<td style="text-align:right;">
+64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+NOP
+</td>
+<td style="text-align:right;">
+78
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+DAL
+</td>
+<td style="text-align:right;">
+73
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+SAS
+</td>
+<td style="text-align:right;">
+76
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+HOU
+</td>
+<td style="text-align:right;">
+85
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2014-10-28
+</td>
+<td style="text-align:left;">
+LAL
+</td>
+<td style="text-align:right;">
+69
+</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="data-discussion" class="section level2">
+<h2>Data Discussion</h2>
+<p>The original dataset contains all games played in Season 2014; upon data wrangling, we first focus on some basic data among teams.</p>
+<p>Figure <a href="#fig:pointdistribution">1</a> shows the distribution of total points scored by team. The graph shows the lowest point scored of 65 points by DEN(Denver Nuggets), and the highest point scored of 144. It is able to show the performance level of each team by their total points. In addition, we observe that the majority of the teams have a centered distribution. However, some teams such as CHI(Chicago Bulls) have less observable performance center, in which the point scored has a lower frequency and seems evenly distributed throughout. In this case, it becomes harder to predict the expected score in a game. Whereas MIL(Milwaukee Bucks) has shown to have a significantly high frequency scoring points in between 90-100, which leads to a slightly more accurate prediction.</p>
+<p>Secondly, we are interested in observing the cumulative averages for total points, and whether it stabilizes or keeps fluctuating. Though the running average for each team is not one of the predictor variables with the reasoning in Section 3, it still provides us an overview of each team’s performance throughout the season, which provides references to the other variables such as Field Goal Percent. Figure <a href="#fig:cumavg">2</a> demonstrates the cumulative average for each team through the whole season; it is indicated that the average stabilizes for the majority of the teams in the second half of the season with a couple exceptions. OKC(Oklahoma City Thunder) shows a constant increase in average throughout the season, and in the second half of the season it’s average has gone up by more than 5 points. On the other hand, TOR(Toronto Raptors)’s average seems to fluctuate even in the second half.</p>
+<p>From the overview of the data, we could conclude that for the majority of the teams, the total points is centered at its mean, and the cumulative averages stabilize after midseason. Therefore we filtered the data, starting from the 41st game. We have chosen to not present the point spread distribution since it is not sufficient to convey any information by itself. Though we can conclude some information about the teams, our data is limited to the cumulative average, which is not sufficient enough to predict the Point Spread without any in-game information. Therefore, the third quarter data from “1996-2019 NBA Stats Complete With Player Stats - Data” drastically improves the model. Still, we do not have any additional in-game information to verify the performance of each team during a game besides the total points in the third quarter, which as a result, is shown by our model.</p>
+<p>Our data wrangling is completed in the statistical language R(<span class="citation">R Core Team (2020)</span>), using haven(<span class="citation">Wickham and Miller (2020)</span>), tidyverse(<span class="citation">Wickham et al. (2019)</span>), dplyr(<span class="citation">Wickham et al. (2020)</span>), ggplot2(<span class="citation">Wickham (2016)</span>), ggpubr(<span class="citation">Kassambara (2020)</span>), modelr(<span class="citation">Wickham (2020a)</span>), tydyr(<span class="citation">Wickham (2020b)</span>), knitr(<span class="citation">Xie (2020)</span>)(<span class="citation">Xie (2015)</span>)(<span class="citation">Xie (2014)</span>), kabelExtra(<span class="citation">Zhu (2020)</span>), broom(<span class="citation">Robinson, Hayes, and Couch (2020)</span>), and AICcmodavg(<span class="citation">Mazerolle (2020)</span>)</p>
+<div class="figure"><span id="fig:pointdistribution"></span>
+<img src="/post/NBA-prediction_files/figure-html/pointdistribution-1.png" alt="Total Points Scored in Season 2014 by Team" width="4800" />
+<p class="caption">
+Figure 1: Total Points Scored in Season 2014 by Team
+</p>
+</div>
+<div class="figure"><span id="fig:cumavg"></span>
+<img src="/post/NBA-prediction_files/figure-html/cumavg-1.png" alt="Cumulative Average for Total Points by Team" width="4800" />
+<p class="caption">
+Figure 2: Cumulative Average for Total Points by Team
+</p>
+</div>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="model" class="section level1">
+<h1>Model</h1>
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>Prior to developing the model, some statistical backgrounds have to be acknowledged. We have chosen to use a multiple linear regression model to predict the dependent variable - Point Spread, with some independent, observable variables. Multiple linear regression focuses on suggesting a relationship between multiple independent variables and a dependent variable. General linear regression indicates that <span class="math inline">\(y=X\beta+\epsilon\)</span>, where <span class="math inline">\(y\)</span> is the <span class="math inline">\(n \times 1\)</span> column matrix, and each <span class="math inline">\(y_i\)</span> is the response for the <span class="math inline">\(i-th\)</span> observation. <span class="math inline">\(X\)</span> is an <span class="math inline">\(n \times (k+1)\)</span> matrix of observed constant, containing <span class="math inline">\(x_{ij}\)</span> as the <span class="math inline">\(j-th\)</span> predictor for the <span class="math inline">\(i-th\)</span> observation. <span class="math inline">\(\beta\)</span> is a <span class="math inline">\((k+1) \times 1\)</span> matrix of unknown constant, including the regression intercept and slope; and <span class="math inline">\(\epsilon\)</span> is a <span class="math inline">\(n \times 1\)</span> matrix of unknown constant as an error term. The general model can be both denoted in matrix form or scalar form, and we are going to use the scalar form below to indicate each predictor variables. To develop a multiple linear regression model, some conditions have to be met, and failure to achieve all assumptions may result in inaccuracy. Most importantly, as a linear model, there has to be a linear relationship between each independent variable and the dependent variable, which is shown in Figure (<a href="#fig:check">3</a>). Moreover, we also assumes the normality of residuals, no multicollinearlity, and its homoscedasticity, in which all assumptions will be verified in the diagnostics plot(Figure <a href="#fig:plot1">4</a>).</p>
+<p>In this paper, the Point Spread of each NBA game in season 2014 is the independent variable, which is a <span class="math inline">\(2460 \times 1\)</span> vector containing all Point Spreads, and <span class="math inline">\(yi\)</span> is the point spread for the i-th game. Team and Opponent are categorical variables, with team ATL(Atlanta Hawks) as reference. As a result, there are 58 dummy variables created by r, in which we will indicate as <span class="math inline">\(\sum_{i=1}^{58} \beta_{i}team_i\)</span> for convenience. All other variables are denoted by <span class="math inline">\(x_1-x_{11}\)</span> respectively corresponding to Third Quarter Point Spread, Average Field Goal Percent, Average Opponent Field Goal Percent, Average Three Point Percent, Average Opponent Three Point Percent, Average Free Throw Percent, Average Opponent Free Throw Percent, Average Total Rebounds, Average Opponent Total Rebounds, Average Turnovers, and Average Opponent Turnovers.</p>
+<p>As a result, the model is denoted as follows(Equation (1)):
+<span class="math display">\[y_i=\beta_0+\sum_{i=1}^{58} \beta_{i}team_i+ \beta_1x_{i,1}+\beta_2x_{i,2}+\beta_3x_{i,3}+\beta_4x_{i,4}+\beta_5x_{i,5}+
+\beta_6x_{i,6}+\beta_7x_{i,7}+\beta_8x_{i,8}+\beta_9x_{i,9}+\beta_{10}x_{1,10}+\beta_{11}x_{i,11} \]</span>
+<span class="math display">\[\text{Equation: 1} \]</span></p>
+</div>
+<div id="model-development" class="section level2">
+<h2>Model Development</h2>
+<p>With the goal of predicting the Point Spread, we have chosen Team, Opponent, Third Quarter Point Spread, Average Field Goal Percent, Average Opponent Field Goal Percent, Average Three Point Percent, Average Opponent Three Point Percent, Average Free Throw Percent, Average Opponent Free Throw Percent, Average Total Rebounds, Average Opponent Total Rebounds, Average Turnovers, and Average Opponent Turnovers as our predictor variables. In the process of selecting the significant variables, we have tested different models with all variables and gradually remove each until drastic changes in model accuracy occur. Moreover, some variables in the raw data are contained in others, for example, offensive rebounds are included in total rebounds, and having it as a variable does not change the result. Therefore, we exclude all variables have either shown little relationship with the Point Spread, or are included in the existing variables. As a result, all the variables adopted in our model have shown significance, with the exception of Team and Opponent, which have shown to have the least relation with the Point Spread from the p-value. However, we decide to include them with the reasoning as follows. Consider the situation where two opponent teams have the exact performance history(ie. cumulative averages for every game being completely equal); though the probability is low, we would still wish to predict which team is more likely to be ahead for certain points. Therefore, having Team and Opponent as categorical variables will provide a prediction favorable to the winning Team.</p>
+<p>That being said, we test out if the variables above can accurately predict the Point Spread, using just the variables given. The model is given in Equation(2) as follows:</p>
+<p><span class="math display">\[y_i=\beta_0+\sum_{i=1}^{58} \beta_{i}team_i+ \beta_1\text{ThirdQuarterPointSpread}_i+\beta_2\text{FieldGoalPercent}_i+\beta_3\text{OppnentFieldGoalPercent}_i\]</span>
+<span class="math display">\[+\beta_4\text{ThreePointPercent}_i+\beta_5\text{OpponentFieldGoalPercent}_i+\beta_6\text{FreeThrowPercent}_i+\beta_7\text{OpponentFreeThrowPercent}_i\]</span>
+<span class="math display">\[+\beta_8\text{TotalRebounds}_i+\beta_9\text{OpponentTotalRebounds}_i+\beta_{10}\text{Turnovers}_{i}+\beta_{11}\text{OpponentTurnovers}_{i}\]</span>
+<span class="math display">\[ \text{Equation: 2} \]</span></p>
+<p>In Equation (2), all the predictor variables are from the result of each game, which is the information we would not know while predicting the Point Spread. It is shown in Table (4) that all variables besides the categorical variables have a p-value of less than 0.05, meaning they are significant. Though some of the categorical dummy variables have larger p-values, they still provide a general estimate of how the team performs. The summary of the model below(Table (4)) shows a residual standard error of 3.63, and a Multiple R-squared of 0.9304. The residual standard error error indicates that the actual point spread shows a 3.63 difference of the predicted point spread on average, and Multiple R-squared indicates that approximately 93% of the variance in Point Spread can be explained by the predictor variables. The model shown in equation (2) has been tested to be the most efficient reduction from all the variables in the data, meaning it has the least number of predictors while still producing reliable results. The results from this model indicates that if the cumulative sum of each predictor is close enough to the actual team performance in a game, then our final model in equation (1) would show similar result.</p>
+<p>The next step is to use the cumulative averages of all the predictor variables, as shown in equation (1). If the cumulative average can provide an accurate estimation of a team’s in game performance, then the model should have similar result as the prior model. Table (6) shows a summary of the final model. From Table (6), we can see that the adjusted R-squared changes to 0.71, which is significantly lower than the first model shown. This result is expected since the in game stats may differ from a team’s average. 0.71 indicates that 71% of the variance can be explained using the model, though it is not as high as the previous model, it still gives reasonable results.</p>
+<p>The model development is done in R(<span class="citation">R Core Team (2020)</span>), using corrr(<span class="citation">Kuhn, Jackson, and Cimentada (2020)</span>) and pander(<span class="citation">Daróczi and Tsegelskyi (2018)</span>) for formatting tables. Plots for the final model are included in section 4, and we will further discuss the results and plots in section 5.</p>
+<div style="page-break-after: always;"></div>
+<table>
+<colgroup>
+<col width="38%" />
+<col width="14%" />
+<col width="16%" />
+<col width="12%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>(Intercept)</strong></td>
+<td align="center">0.4174</td>
+<td align="center">4.284</td>
+<td align="center">0.09744</td>
+<td align="center">0.9224</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamBOS</strong></td>
+<td align="center">-0.6416</td>
+<td align="center">0.892</td>
+<td align="center">-0.7193</td>
+<td align="center">0.4722</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamCHI</strong></td>
+<td align="center">0.4082</td>
+<td align="center">0.9092</td>
+<td align="center">0.449</td>
+<td align="center">0.6536</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamCLE</strong></td>
+<td align="center">3.242</td>
+<td align="center">0.8946</td>
+<td align="center">3.624</td>
+<td align="center">0.0003059</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamDAL</strong></td>
+<td align="center">-0.6643</td>
+<td align="center">0.8855</td>
+<td align="center">-0.7502</td>
+<td align="center">0.4533</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamDEN</strong></td>
+<td align="center">-1.636</td>
+<td align="center">0.8864</td>
+<td align="center">-1.846</td>
+<td align="center">0.06521</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamDET</strong></td>
+<td align="center">0.907</td>
+<td align="center">0.8955</td>
+<td align="center">1.013</td>
+<td align="center">0.3114</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamGSW</strong></td>
+<td align="center">-0.1963</td>
+<td align="center">0.8937</td>
+<td align="center">-0.2196</td>
+<td align="center">0.8262</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamHOU</strong></td>
+<td align="center">2.011</td>
+<td align="center">0.9008</td>
+<td align="center">2.232</td>
+<td align="center">0.02584</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamIND</strong></td>
+<td align="center">-1.047</td>
+<td align="center">0.8948</td>
+<td align="center">-1.17</td>
+<td align="center">0.2423</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamLAC</strong></td>
+<td align="center">0.1276</td>
+<td align="center">0.9026</td>
+<td align="center">0.1414</td>
+<td align="center">0.8876</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamLAL</strong></td>
+<td align="center">-3.401</td>
+<td align="center">0.9018</td>
+<td align="center">-3.772</td>
+<td align="center">0.0001724</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamMEM</strong></td>
+<td align="center">-1.382</td>
+<td align="center">0.8744</td>
+<td align="center">-1.58</td>
+<td align="center">0.1144</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamMIA</strong></td>
+<td align="center">-1.944</td>
+<td align="center">0.8886</td>
+<td align="center">-2.188</td>
+<td align="center">0.02891</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamMIL</strong></td>
+<td align="center">-4.323</td>
+<td align="center">0.8822</td>
+<td align="center">-4.9</td>
+<td align="center">1.128e-06</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamMIN</strong></td>
+<td align="center">-1.699</td>
+<td align="center">0.89</td>
+<td align="center">-1.909</td>
+<td align="center">0.05656</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamNOP</strong></td>
+<td align="center">-1.135</td>
+<td align="center">0.8971</td>
+<td align="center">-1.265</td>
+<td align="center">0.2061</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamNYK</strong></td>
+<td align="center">-3.497</td>
+<td align="center">0.8921</td>
+<td align="center">-3.92</td>
+<td align="center">9.516e-05</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamOKC</strong></td>
+<td align="center">-0.599</td>
+<td align="center">0.9005</td>
+<td align="center">-0.6652</td>
+<td align="center">0.5061</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamORL</strong></td>
+<td align="center">-3.136</td>
+<td align="center">0.8859</td>
+<td align="center">-3.54</td>
+<td align="center">0.00042</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamPHI</strong></td>
+<td align="center">0.3093</td>
+<td align="center">0.8968</td>
+<td align="center">0.3449</td>
+<td align="center">0.7303</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamPOR</strong></td>
+<td align="center">1.604</td>
+<td align="center">0.9113</td>
+<td align="center">1.76</td>
+<td align="center">0.07868</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamSAC</strong></td>
+<td align="center">-2.473</td>
+<td align="center">0.9012</td>
+<td align="center">-2.744</td>
+<td align="center">0.006179</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamSAS</strong></td>
+<td align="center">1.625</td>
+<td align="center">0.8837</td>
+<td align="center">1.839</td>
+<td align="center">0.06621</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamTOR</strong></td>
+<td align="center">-0.4526</td>
+<td align="center">0.8935</td>
+<td align="center">-0.5066</td>
+<td align="center">0.6126</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamUTA</strong></td>
+<td align="center">-1.179</td>
+<td align="center">0.915</td>
+<td align="center">-1.288</td>
+<td align="center">0.198</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamWAS</strong></td>
+<td align="center">-4.021</td>
+<td align="center">0.9103</td>
+<td align="center">-4.417</td>
+<td align="center">1.12e-05</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentBOS</strong></td>
+<td align="center">0.6269</td>
+<td align="center">0.8678</td>
+<td align="center">0.7223</td>
+<td align="center">0.4703</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentCHI</strong></td>
+<td align="center">-0.3663</td>
+<td align="center">0.9092</td>
+<td align="center">-0.4029</td>
+<td align="center">0.6871</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentCLE</strong></td>
+<td align="center">-3.141</td>
+<td align="center">0.8872</td>
+<td align="center">-3.541</td>
+<td align="center">0.0004191</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentDAL</strong></td>
+<td align="center">0.8179</td>
+<td align="center">0.8922</td>
+<td align="center">0.9167</td>
+<td align="center">0.3595</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentDEN</strong></td>
+<td align="center">1.804</td>
+<td align="center">0.8854</td>
+<td align="center">2.037</td>
+<td align="center">0.04189</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentDET</strong></td>
+<td align="center">-0.8121</td>
+<td align="center">0.8882</td>
+<td align="center">-0.9143</td>
+<td align="center">0.3608</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentGSW</strong></td>
+<td align="center">0.1464</td>
+<td align="center">0.8766</td>
+<td align="center">0.1671</td>
+<td align="center">0.8674</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentHOU</strong></td>
+<td align="center">-1.728</td>
+<td align="center">0.8947</td>
+<td align="center">-1.932</td>
+<td align="center">0.05372</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentIND</strong></td>
+<td align="center">1.141</td>
+<td align="center">0.8878</td>
+<td align="center">1.285</td>
+<td align="center">0.199</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentLAC</strong></td>
+<td align="center">-0.1812</td>
+<td align="center">0.9025</td>
+<td align="center">-0.2008</td>
+<td align="center">0.8409</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentLAL</strong></td>
+<td align="center">3.497</td>
+<td align="center">0.895</td>
+<td align="center">3.907</td>
+<td align="center">0.0001002</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentMEM</strong></td>
+<td align="center">1.453</td>
+<td align="center">0.859</td>
+<td align="center">1.692</td>
+<td align="center">0.09102</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentMIA</strong></td>
+<td align="center">1.992</td>
+<td align="center">0.8819</td>
+<td align="center">2.258</td>
+<td align="center">0.02415</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentMIL</strong></td>
+<td align="center">4.374</td>
+<td align="center">0.8757</td>
+<td align="center">4.995</td>
+<td align="center">7.037e-07</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentMIN</strong></td>
+<td align="center">1.817</td>
+<td align="center">0.8788</td>
+<td align="center">2.068</td>
+<td align="center">0.03895</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentNOP</strong></td>
+<td align="center">1.261</td>
+<td align="center">0.8861</td>
+<td align="center">1.423</td>
+<td align="center">0.1549</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentNYK</strong></td>
+<td align="center">3.622</td>
+<td align="center">0.8932</td>
+<td align="center">4.055</td>
+<td align="center">5.424e-05</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentOKC</strong></td>
+<td align="center">0.7842</td>
+<td align="center">0.8886</td>
+<td align="center">0.8825</td>
+<td align="center">0.3777</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentORL</strong></td>
+<td align="center">3.503</td>
+<td align="center">0.8982</td>
+<td align="center">3.9</td>
+<td align="center">0.000103</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentPHI</strong></td>
+<td align="center">-0.1415</td>
+<td align="center">0.8862</td>
+<td align="center">-0.1597</td>
+<td align="center">0.8732</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentPOR</strong></td>
+<td align="center">-1.293</td>
+<td align="center">0.9229</td>
+<td align="center">-1.401</td>
+<td align="center">0.1615</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentSAC</strong></td>
+<td align="center">2.614</td>
+<td align="center">0.8963</td>
+<td align="center">2.916</td>
+<td align="center">0.003628</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentSAS</strong></td>
+<td align="center">-1.482</td>
+<td align="center">0.8816</td>
+<td align="center">-1.681</td>
+<td align="center">0.09312</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentTOR</strong></td>
+<td align="center">0.533</td>
+<td align="center">0.8865</td>
+<td align="center">0.6012</td>
+<td align="center">0.5479</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentUTA</strong></td>
+<td align="center">1.259</td>
+<td align="center">0.9032</td>
+<td align="center">1.394</td>
+<td align="center">0.1637</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentWAS</strong></td>
+<td align="center">4.197</td>
+<td align="center">0.9098</td>
+<td align="center">4.613</td>
+<td align="center">4.524e-06</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>ThirdQuarterPointSpread</strong></td>
+<td align="center">0.188</td>
+<td align="center">0.01556</td>
+<td align="center">12.08</td>
+<td align="center">2.679e-31</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>FieldGoalPercent</strong></td>
+<td align="center">83.5</td>
+<td align="center">3.399</td>
+<td align="center">24.56</td>
+<td align="center">5.216e-103</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OppFieldGoalPercent</strong></td>
+<td align="center">-83.75</td>
+<td align="center">3.398</td>
+<td align="center">-24.65</td>
+<td align="center">1.482e-103</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>ThreePointPercent</strong></td>
+<td align="center">16.9</td>
+<td align="center">1.394</td>
+<td align="center">12.13</td>
+<td align="center">1.63e-31</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OppThreePointPercent</strong></td>
+<td align="center">-17.08</td>
+<td align="center">1.391</td>
+<td align="center">-12.28</td>
+<td align="center">3.123e-32</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>FreeThrowPercent</strong></td>
+<td align="center">9.908</td>
+<td align="center">1.191</td>
+<td align="center">8.321</td>
+<td align="center">3.1e-16</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OppFreeThrowPercent</strong></td>
+<td align="center">-10.08</td>
+<td align="center">1.191</td>
+<td align="center">-8.463</td>
+<td align="center">1.006e-16</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TotalRebounds</strong></td>
+<td align="center">0.5019</td>
+<td align="center">0.02724</td>
+<td align="center">18.43</td>
+<td align="center">7.609e-65</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OppTotalRebound</strong></td>
+<td align="center">-0.5081</td>
+<td align="center">0.02722</td>
+<td align="center">-18.67</td>
+<td align="center">2.891e-66</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>Turnovers</strong></td>
+<td align="center">-1.002</td>
+<td align="center">0.03873</td>
+<td align="center">-25.86</td>
+<td align="center">1.848e-111</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OppTurnover</strong></td>
+<td align="center">1.006</td>
+<td align="center">0.03859</td>
+<td align="center">26.07</td>
+<td align="center">8.003e-113</td>
+</tr>
+</tbody>
+</table>
+<table style="width:86%;">
+<caption>Test Ideal Model Fit Summary</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="11%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">991</td>
+<td align="center">3.672</td>
+<td align="center">0.929</td>
+<td align="center">0.9242</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+<table style="width:100%;">
+<colgroup>
+<col width="38%" />
+<col width="14%" />
+<col width="16%" />
+<col width="14%" />
+<col width="16%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center"> </th>
+<th align="center">Estimate</th>
+<th align="center">Std. Error</th>
+<th align="center">t value</th>
+<th align="center">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><strong>TeamATL</strong></td>
+<td align="center">-47.74</td>
+<td align="center">136.8</td>
+<td align="center">-0.349</td>
+<td align="center">0.7271</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamBOS</strong></td>
+<td align="center">-51.75</td>
+<td align="center">138.2</td>
+<td align="center">-0.3743</td>
+<td align="center">0.7082</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamCHI</strong></td>
+<td align="center">-52.25</td>
+<td align="center">136.9</td>
+<td align="center">-0.3816</td>
+<td align="center">0.7029</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamCLE</strong></td>
+<td align="center">-48.2</td>
+<td align="center">136.2</td>
+<td align="center">-0.3539</td>
+<td align="center">0.7235</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamDAL</strong></td>
+<td align="center">-51.75</td>
+<td align="center">138.5</td>
+<td align="center">-0.3737</td>
+<td align="center">0.7087</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamDEN</strong></td>
+<td align="center">-52.5</td>
+<td align="center">137.8</td>
+<td align="center">-0.3808</td>
+<td align="center">0.7034</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamDET</strong></td>
+<td align="center">-51.43</td>
+<td align="center">137.7</td>
+<td align="center">-0.3736</td>
+<td align="center">0.7088</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamGSW</strong></td>
+<td align="center">-44.9</td>
+<td align="center">140.1</td>
+<td align="center">-0.3204</td>
+<td align="center">0.7487</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamHOU</strong></td>
+<td align="center">-44.42</td>
+<td align="center">138</td>
+<td align="center">-0.3218</td>
+<td align="center">0.7476</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamIND</strong></td>
+<td align="center">-51.39</td>
+<td align="center">135.6</td>
+<td align="center">-0.379</td>
+<td align="center">0.7048</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamLAC</strong></td>
+<td align="center">-45.45</td>
+<td align="center">136.1</td>
+<td align="center">-0.3339</td>
+<td align="center">0.7385</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamLAL</strong></td>
+<td align="center">-57.09</td>
+<td align="center">137.5</td>
+<td align="center">-0.4152</td>
+<td align="center">0.6781</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamMEM</strong></td>
+<td align="center">-50.5</td>
+<td align="center">136.3</td>
+<td align="center">-0.3706</td>
+<td align="center">0.711</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamMIA</strong></td>
+<td align="center">-51.79</td>
+<td align="center">133.4</td>
+<td align="center">-0.3883</td>
+<td align="center">0.6979</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamMIL</strong></td>
+<td align="center">-47.29</td>
+<td align="center">137.1</td>
+<td align="center">-0.3448</td>
+<td align="center">0.7303</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamMIN</strong></td>
+<td align="center">-56.77</td>
+<td align="center">138.5</td>
+<td align="center">-0.4099</td>
+<td align="center">0.682</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamNOP</strong></td>
+<td align="center">-51.16</td>
+<td align="center">136.6</td>
+<td align="center">-0.3744</td>
+<td align="center">0.7082</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamNYK</strong></td>
+<td align="center">-59.03</td>
+<td align="center">134.9</td>
+<td align="center">-0.4376</td>
+<td align="center">0.6618</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamOKC</strong></td>
+<td align="center">-49.44</td>
+<td align="center">137.4</td>
+<td align="center">-0.3599</td>
+<td align="center">0.719</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamORL</strong></td>
+<td align="center">-50.72</td>
+<td align="center">137.5</td>
+<td align="center">-0.3689</td>
+<td align="center">0.7123</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamPHI</strong></td>
+<td align="center">-49.72</td>
+<td align="center">137.7</td>
+<td align="center">-0.3612</td>
+<td align="center">0.7181</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamPOR</strong></td>
+<td align="center">-53.4</td>
+<td align="center">138.6</td>
+<td align="center">-0.3851</td>
+<td align="center">0.7002</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamSAC</strong></td>
+<td align="center">-53.09</td>
+<td align="center">137.4</td>
+<td align="center">-0.3864</td>
+<td align="center">0.6993</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamSAS</strong></td>
+<td align="center">-50.36</td>
+<td align="center">137.5</td>
+<td align="center">-0.3663</td>
+<td align="center">0.7142</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamTOR</strong></td>
+<td align="center">-50.84</td>
+<td align="center">136</td>
+<td align="center">-0.3737</td>
+<td align="center">0.7087</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>TeamUTA</strong></td>
+<td align="center">-52.12</td>
+<td align="center">134.5</td>
+<td align="center">-0.3875</td>
+<td align="center">0.6985</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>TeamWAS</strong></td>
+<td align="center">-49.46</td>
+<td align="center">136.4</td>
+<td align="center">-0.3626</td>
+<td align="center">0.717</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentBOS</strong></td>
+<td align="center">-0.5722</td>
+<td align="center">1.671</td>
+<td align="center">-0.3425</td>
+<td align="center">0.7321</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentCHI</strong></td>
+<td align="center">-0.489</td>
+<td align="center">1.732</td>
+<td align="center">-0.2823</td>
+<td align="center">0.7778</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentCLE</strong></td>
+<td align="center">-1.073</td>
+<td align="center">1.699</td>
+<td align="center">-0.6317</td>
+<td align="center">0.5277</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentDAL</strong></td>
+<td align="center">0.6591</td>
+<td align="center">1.728</td>
+<td align="center">0.3814</td>
+<td align="center">0.703</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentDEN</strong></td>
+<td align="center">1.938</td>
+<td align="center">1.702</td>
+<td align="center">1.138</td>
+<td align="center">0.2552</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentDET</strong></td>
+<td align="center">0.4323</td>
+<td align="center">1.703</td>
+<td align="center">0.2538</td>
+<td align="center">0.7997</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentGSW</strong></td>
+<td align="center">-0.1234</td>
+<td align="center">1.691</td>
+<td align="center">-0.07297</td>
+<td align="center">0.9418</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentHOU</strong></td>
+<td align="center">1.093</td>
+<td align="center">1.718</td>
+<td align="center">0.6363</td>
+<td align="center">0.5248</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentIND</strong></td>
+<td align="center">-0.4567</td>
+<td align="center">1.708</td>
+<td align="center">-0.2673</td>
+<td align="center">0.7893</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentLAC</strong></td>
+<td align="center">-1.923</td>
+<td align="center">1.728</td>
+<td align="center">-1.113</td>
+<td align="center">0.2659</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentLAL</strong></td>
+<td align="center">3.528</td>
+<td align="center">1.704</td>
+<td align="center">2.07</td>
+<td align="center">0.03872</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentMEM</strong></td>
+<td align="center">-0.3579</td>
+<td align="center">1.658</td>
+<td align="center">-0.2159</td>
+<td align="center">0.8291</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentMIA</strong></td>
+<td align="center">2.219</td>
+<td align="center">1.705</td>
+<td align="center">1.302</td>
+<td align="center">0.1933</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentMIL</strong></td>
+<td align="center">2.579</td>
+<td align="center">1.689</td>
+<td align="center">1.527</td>
+<td align="center">0.1271</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentMIN</strong></td>
+<td align="center">2.494</td>
+<td align="center">1.698</td>
+<td align="center">1.469</td>
+<td align="center">0.1422</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentNOP</strong></td>
+<td align="center">0.6249</td>
+<td align="center">1.687</td>
+<td align="center">0.3704</td>
+<td align="center">0.7112</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentNYK</strong></td>
+<td align="center">3.145</td>
+<td align="center">1.724</td>
+<td align="center">1.824</td>
+<td align="center">0.06849</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentOKC</strong></td>
+<td align="center">0.6661</td>
+<td align="center">1.685</td>
+<td align="center">0.3954</td>
+<td align="center">0.6927</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentORL</strong></td>
+<td align="center">0.7223</td>
+<td align="center">1.731</td>
+<td align="center">0.4173</td>
+<td align="center">0.6765</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentPHI</strong></td>
+<td align="center">2.458</td>
+<td align="center">1.684</td>
+<td align="center">1.46</td>
+<td align="center">0.1448</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentPOR</strong></td>
+<td align="center">1.192</td>
+<td align="center">1.739</td>
+<td align="center">0.6855</td>
+<td align="center">0.4932</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentSAC</strong></td>
+<td align="center">3.562</td>
+<td align="center">1.716</td>
+<td align="center">2.077</td>
+<td align="center">0.03811</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentSAS</strong></td>
+<td align="center">-1.058</td>
+<td align="center">1.702</td>
+<td align="center">-0.6219</td>
+<td align="center">0.5342</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentTOR</strong></td>
+<td align="center">0.2737</td>
+<td align="center">1.72</td>
+<td align="center">0.1592</td>
+<td align="center">0.8736</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>OpponentUTA</strong></td>
+<td align="center">0.7378</td>
+<td align="center">1.704</td>
+<td align="center">0.433</td>
+<td align="center">0.6651</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>OpponentWAS</strong></td>
+<td align="center">3.776</td>
+<td align="center">1.746</td>
+<td align="center">2.163</td>
+<td align="center">0.03083</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>ThirdQuarterPointSpread</strong></td>
+<td align="center">0.7864</td>
+<td align="center">0.02008</td>
+<td align="center">39.17</td>
+<td align="center">9.475e-199</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>AvgFieldGoalPercent</strong></td>
+<td align="center">-62.86</td>
+<td align="center">119.1</td>
+<td align="center">-0.5277</td>
+<td align="center">0.5978</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>AvgOppFieldGoalPercent</strong></td>
+<td align="center">3.94</td>
+<td align="center">123.9</td>
+<td align="center">0.03179</td>
+<td align="center">0.9746</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>AvgThreePointPercent</strong></td>
+<td align="center">-24.53</td>
+<td align="center">53.2</td>
+<td align="center">-0.461</td>
+<td align="center">0.6449</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>AvgOppThreePointPercent</strong></td>
+<td align="center">81.23</td>
+<td align="center">55.33</td>
+<td align="center">1.468</td>
+<td align="center">0.1424</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>AvgFreeThrowPercent</strong></td>
+<td align="center">51.34</td>
+<td align="center">43.9</td>
+<td align="center">1.169</td>
+<td align="center">0.2425</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>AvgOppFreeThrowPercent</strong></td>
+<td align="center">37.62</td>
+<td align="center">50.82</td>
+<td align="center">0.7403</td>
+<td align="center">0.4593</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>AvgTotalRebounds</strong></td>
+<td align="center">-0.2162</td>
+<td align="center">0.8383</td>
+<td align="center">-0.2579</td>
+<td align="center">0.7965</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>AvgOppTotalRebounds</strong></td>
+<td align="center">0.4206</td>
+<td align="center">0.9274</td>
+<td align="center">0.4535</td>
+<td align="center">0.6503</td>
+</tr>
+<tr class="odd">
+<td align="center"><strong>AvgTurnovers</strong></td>
+<td align="center">-0.4714</td>
+<td align="center">1.325</td>
+<td align="center">-0.3556</td>
+<td align="center">0.7222</td>
+</tr>
+<tr class="even">
+<td align="center"><strong>AvgOppTurnovers</strong></td>
+<td align="center">-0.8854</td>
+<td align="center">1.278</td>
+<td align="center">-0.6928</td>
+<td align="center">0.4886</td>
+</tr>
+</tbody>
+</table>
+<table style="width:88%;">
+<caption>Real Model Fit Summary</caption>
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="12%" />
+<col width="23%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Observations</th>
+<th align="center">Residual Std. Error</th>
+<th align="center"><span class="math inline">\(R^2\)</span></th>
+<th align="center">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">991</td>
+<td align="center">7.139</td>
+<td align="center">0.7318</td>
+<td align="center">0.7133</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="result" class="section level1">
+<h1>Result</h1>
+<div class="figure"><span id="fig:check"></span>
+<img src="/post/NBA-prediction_files/figure-html/check-1.png" alt="Check Linearality for each Predictor Variable" width="4800" />
+<p class="caption">
+Figure 3: Check Linearality for each Predictor Variable
+</p>
+</div>
+<div class="figure"><span id="fig:plot1"></span>
+<img src="/post/NBA-prediction_files/figure-html/plot1-1.png" alt="Diagnostic Plots for Regression Model" width="672" />
+<p class="caption">
+Figure 4: Diagnostic Plots for Regression Model
+</p>
+</div>
+<div class="figure"><span id="fig:pred2015"></span>
+<img src="/post/NBA-prediction_files/figure-html/pred2015-1.png" alt="Season 2015 Predicted Point Spread compared to Actual Point Spread" width="672" />
+<p class="caption">
+Figure 5: Season 2015 Predicted Point Spread compared to Actual Point Spread
+</p>
+</div>
+<table>
+<caption>
+<span id="tab:predtab">Table 3: </span>Prediction of Point Spread with 10 randomly sampled games
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Game
+</th>
+<th style="text-align:left;">
+Team
+</th>
+<th style="text-align:left;">
+Opponent
+</th>
+<th style="text-align:right;">
+PointSpread
+</th>
+<th style="text-align:right;">
+Predict.fit
+</th>
+<th style="text-align:right;">
+Predict.lwr
+</th>
+<th style="text-align:right;">
+Predict.upr
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+TOR
+</td>
+<td style="text-align:left;">
+POR
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+14.399662
+</td>
+<td style="text-align:right;">
+-1.626112
+</td>
+<td style="text-align:right;">
+30.425437
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+68
+</td>
+<td style="text-align:left;">
+SAS
+</td>
+<td style="text-align:left;">
+POR
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10.506143
+</td>
+<td style="text-align:right;">
+-6.378235
+</td>
+<td style="text-align:right;">
+27.390520
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+57
+</td>
+<td style="text-align:left;">
+NYK
+</td>
+<td style="text-align:left;">
+MIN
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+16.200200
+</td>
+<td style="text-align:right;">
+-1.160206
+</td>
+<td style="text-align:right;">
+33.560605
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+56
+</td>
+<td style="text-align:left;">
+NOP
+</td>
+<td style="text-align:left;">
+WAS
+</td>
+<td style="text-align:right;">
+-20
+</td>
+<td style="text-align:right;">
+-6.702546
+</td>
+<td style="text-align:right;">
+-23.369003
+</td>
+<td style="text-align:right;">
+9.963911
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:left;">
+MIL
+</td>
+<td style="text-align:left;">
+IND
+</td>
+<td style="text-align:right;">
+-5
+</td>
+<td style="text-align:right;">
+-6.063798
+</td>
+<td style="text-align:right;">
+-22.214306
+</td>
+<td style="text-align:right;">
+10.086711
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:left;">
+CLE
+</td>
+<td style="text-align:left;">
+IND
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+-0.323232
+</td>
+<td style="text-align:right;">
+-15.104581
+</td>
+<td style="text-align:right;">
+14.458117
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+66
+</td>
+<td style="text-align:left;">
+ATL
+</td>
+<td style="text-align:left;">
+MEM
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+12.724185
+</td>
+<td style="text-align:right;">
+-3.243088
+</td>
+<td style="text-align:right;">
+28.691457
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:left;">
+MIL
+</td>
+<td style="text-align:left;">
+HOU
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+3.605139
+</td>
+<td style="text-align:right;">
+-12.550003
+</td>
+<td style="text-align:right;">
+19.760282
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:left;">
+WAS
+</td>
+<td style="text-align:left;">
+CLE
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+21.029673
+</td>
+<td style="text-align:right;">
+3.641135
+</td>
+<td style="text-align:right;">
+38.418211
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:left;">
+POR
+</td>
+<td style="text-align:left;">
+DET
+</td>
+<td style="text-align:right;">
+-20
+</td>
+<td style="text-align:right;">
+-11.336417
+</td>
+<td style="text-align:right;">
+-27.867806
+</td>
+<td style="text-align:right;">
+5.194972
+</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>The section above demonstrates the results of our model, including diagnostics using season 2014 data, and some predictions using 2015 data. The figure indicates that our model failed to sufficiently predict the Point Spread, however, it could potentially be used to predict the Money Line result.</p>
+<p>Figure <a href="#fig:check">3</a> demonstrates the relationship of each independent variable and the Point Spread. From the graph, Third Quarter Point Spread appears to have the strongest linear relation with the final point spread with very few outliners. It explains the reason of Third Quarter Point Spread having the smallest p-value, rejecting the hypothesis that it is not significant. All other predictors tends to be linear as well, however, with higher variance. But we can use the method of least square to approximate a straight line through the points.</p>
+<p>In addition, Figure <a href="#fig:plot1">4</a> contains 4 diagnostic plots, in which we can use to analyze the model fit. First of all, the Residuals vs Fitted also shows the linear relationship between the independent variables and the dependent variables in a general sense, comparing to showing relationships of each variable separately in <a href="#fig:check">3</a>. It is demonstrated that the residuals follow a linear tendency as the red line appears to be horizontal; however, the variance spreads within a 40 points interval, which may the difference between the prediction and the actual point spread. Secondly, the Normal Q-Q plot from Figure<a href="#fig:plot1">4</a> successfully indicates that the residuals are normally distributed, which is what we are looking for in a model, satisfying the second assumption for applying linear regression. Scale-Location plot demonstrates that the residuals are evenly spread along the range of predictors, and the spread seems to be evenly distributed along the fitted value, which is also a good indicator. Moreover, the Residuals vs Leverage plot shows if there are influential cases such as outlines that will impact the accuracy of our model significantly. From the plot, all residuals seem to be clustered on the right, and it does not seem to have any influential cases that will impact the result drastically. Figure <a href="#fig:plot1">4</a> suggests that our model is efficient to explain the relation of the independent and dependent variables.</p>
+<p>For model verification, we have decided to use real NBA data from Season 2015, hoping that the model will be able to predict the Point Spread. We have plotted the predicted point spread against the actual point spread in figure <a href="#fig:pred2015">5</a>. An ideal plot would have an approximate slope of 1, in which each predicted value perfectly corresponds to the actual Point Spread in 2015. However, the blue regression line shows an approximated slope of 1.4, meaning that we failed to accurately predict some of the Point Spread outcomes in 2015. Moreover, the dotted red lines are the upper and lower prediction interval, which reflects the uncertainly of each predicted value, whereas the gray strip indicates the confidence interval. It can be shown by the graph that our model is not accurate enough to predict the point spread in each game.</p>
+<p>The results from figure <a href="#fig:pred2015">5</a> may seem a bit discouraging as it is not sufficient enough to predict the point spread, especially in betting when we are against the betting-line set by the sports book. However, the graph does indicate the majority of the positive predicted point spreads map to actual positive point spreads, negative point spreads map to negatives. Therefore, our model still holds its value for betting on the Money Line to predict the winning team. We took this idea further, and drew 10 random games from Season 2015. With the data we already have, Table <a href="#tab:predtab">3</a> shows the prediction for each game’s team spread, as well as the prediction interval. We only accurately predicted 1 of the point spread - game 66 of ATL vs. MEM. The prediction shows a 12.72 point Point Spread with ATL in favor, which is exactly the Point Spread of that game. Regardless, we can see that the model successfully predicted 9 out of 10 games for points being positively or negatively spread. A positive Point Spread indicates the Home Team winning, and from table <a href="#tab:predtab">3</a>, the only game we have wrongly predicted is the 59th game of CLE vs. IND. The prediction indicates that IND would win by approximately 0.3 points, however, CLE won by 4 percent. In conclusion, although our model is not sufficient enough to predict the Point Spread, it shows a high accuracy of predicting the winning team which could be used for betting the Money Line.</p>
+<p>Our result have some potential weaknesses and ts limitations due to the unpredictable nature of basketball, which cannot be generalized by just the team performance. More specifically, each player has significant impact on the game, which are not accounted for in the model. For example, a team’s best player being injured will not only drastically impact the game results, but also may impact the rest of the seasonal performance of that team. The players are not constant in each game, which should also be accounted for as it might cause the performance to differ from the average. Moreover, some of the predictor variables from our model are not independent, which results in potential multicollinearlity. A linear model assumes all independent variables are independent from each other, in basketball, it is almost impossible to achieve as each aspects are closly related to each other. However, that being said, our model can be further improved in future studies. Figure <a href="#fig:check">3</a> has shown that the most influencial perdictor is the point spread in the third quarter of that game, which is before bets close. Therefore, we could potentially find or create a dataset with in-game information of the third quarter, and use it to build a model, which may result in significantly higher accuracy.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<p>[1] github repo: “<a href="https://github.com/mackenziequ/NBA-prediction" class="uri">https://github.com/mackenziequ/NBA-prediction</a>”</p>
+</div>
+<div id="reference" class="section level1 unnumbered">
+<h1>Reference</h1>
+<div id="refs" class="references">
+<div id="ref-cite_rmarkdown1">
+<p>Allaire, JJ, Yihui Xie, Jonathan McPherson, Javier Luraschi, Kevin Ushey, Aron Atkins, Hadley Wickham, Joe Cheng, Winston Chang, and Richard Iannone. 2020. <em>Rmarkdown: Dynamic Documents for R</em>. <a href="https://github.com/rstudio/rmarkdown">https://github.com/rstudio/rmarkdown</a>.</p>
+</div>
+<div id="ref-cite_basketballreference">
+<p><em>Basketball Statistics and History</em>. 2020. <a href="https://www.basketball-reference.com/">https://www.basketball-reference.com/</a>.</p>
+</div>
+<div id="ref-cite_pander">
+<p>Daróczi, Gergely, and Roman Tsegelskyi. 2018. <em>Pander: An R ’Pandoc’ Writer</em>. <a href="https://CRAN.R-project.org/package=pander">https://CRAN.R-project.org/package=pander</a>.</p>
+</div>
+<div id="ref-cite_ggpubr">
+<p>Kassambara, Alboukadel. 2020. <em>Ggpubr: ’Ggplot2’ Based Publication Ready Plots</em>. <a href="https://CRAN.R-project.org/package=ggpubr">https://CRAN.R-project.org/package=ggpubr</a>.</p>
+</div>
+<div id="ref-cite_stats1">
+<p>Kelepouris, Ionas. 2018. <em>NBA Team Game Stats from 2014 to 2018</em>. <a href="https://www.kaggle.com/ionaskel/nba-games-stats-from-2014-to-2018/metadata">https://www.kaggle.com/ionaskel/nba-games-stats-from-2014-to-2018/metadata</a>.</p>
+</div>
+<div id="ref-cite_corrr">
+<p>Kuhn, Max, Simon Jackson, and Jorge Cimentada. 2020. <em>Corrr: Correlations in R</em>. <a href="https://CRAN.R-project.org/package=corrr">https://CRAN.R-project.org/package=corrr</a>.</p>
+</div>
+<div id="ref-cite_AIC">
+<p>Mazerolle, Marc J. 2020. <em>AICcmodavg: Model Selection and Multimodel Inference Based on (Q)AIC(c)</em>. <a href="https://cran.r-project.org/package=AICcmodavg">https://cran.r-project.org/package=AICcmodavg</a>.</p>
+</div>
+<div id="ref-citeR">
+<p>R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-cite_gamestats">
+<p>rLoper. 2020. <em>1996-2019 Nba Stats Complete with Player Stats</em>. <a href="https://www.kaggle.com/rloper/19962018-nba-stats-complete-with-player-stats/metadata">https://www.kaggle.com/rloper/19962018-nba-stats-complete-with-player-stats/metadata</a>.</p>
+</div>
+<div id="ref-cite_broom">
+<p>Robinson, David, Alex Hayes, and Simon Couch. 2020. <em>Broom: Convert Statistical Objects into Tidy Tibbles</em>. <a href="https://CRAN.R-project.org/package=broom">https://CRAN.R-project.org/package=broom</a>.</p>
+</div>
+<div id="ref-cite_ggplot2">
+<p>Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.</p>
+</div>
+<div id="ref-cite_modelr">
+<p>———. 2020a. <em>Modelr: Modelling Functions That Work with the Pipe</em>. <a href="https://CRAN.R-project.org/package=modelr">https://CRAN.R-project.org/package=modelr</a>.</p>
+</div>
+<div id="ref-cite_tidyr">
+<p>———. 2020b. <em>Tidyr: Tidy Messy Data</em>.</p>
+</div>
+<div id="ref-cite_tidyverse">
+<p>Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. “Welcome to the tidyverse.” <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.</p>
+</div>
+<div id="ref-cite_dplyr">
+<p>Wickham, Hadley, Romain François, Lionel Henry, and Kirill Müller. 2020. <em>Dplyr: A Grammar of Data Manipulation</em>.</p>
+</div>
+<div id="ref-cite_haven">
+<p>Wickham, Hadley, and Evan Miller. 2020. <em>Haven: Import and Export ’Spss’, ’Stata’ and ’Sas’ Files</em>.</p>
+</div>
+<div id="ref-cite_knitr3">
+<p>Xie, Yihui. 2014. “Knitr: A Comprehensive Tool for Reproducible Research in R.” In <em>Implementing Reproducible Computational Research</em>, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman; Hall/CRC. <a href="http://www.crcpress.com/product/isbn/9781466561595">http://www.crcpress.com/product/isbn/9781466561595</a>.</p>
+</div>
+<div id="ref-cite_knitr2">
+<p>———. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.</p>
+</div>
+<div id="ref-cite_knitr1">
+<p>———. 2020. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.</p>
+</div>
+<div id="ref-cite_rmarkdown2">
+<p>Xie, Yihui, J. J. Allaire, and Garrett Grolemund. 2018. <em>R Markdown: The Definitive Guide</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown">https://bookdown.org/yihui/rmarkdown</a>.</p>
+</div>
+<div id="ref-cite_rmarkdown3">
+<p>Xie, Yihui, Christophe Dervieux, and Emily Riederer. 2020. <em>R Markdown Cookbook</em>. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://bookdown.org/yihui/rmarkdown-cookbook">https://bookdown.org/yihui/rmarkdown-cookbook</a>.</p>
+</div>
+<div id="ref-cite_kableExtra">
+<p>Zhu, Hao. 2020. <em>KableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax</em>.</p>
+</div>
+</div>
+</div>
+</div>
+        <div class="post-footer">
+            <div class="info">
+                
+                <span class="separator"><a class="tag" href="/tags/basketball/">basketball</a><a class="tag" href="/tags/linear-regression/">linear regression</a><a class="tag" href="/tags/nba-prediction/">NBA prediction</a><a class="tag" href="/tags/pointspread/">pointspread</a><a class="tag" href="/tags/statistics/">statistics</a><a class="tag" href="/tags/regression/">regression</a></span>
+
+            </div>
+        </div>
+
+        
+            
+        
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"
+        src="/js/jquery.min.86b1e8f819ee2d9099a783e50b49dff24282545fc40773861f9126b921532e4c.js"
+        integrity="sha256-hrHo&#43;BnuLZCZp4PlC0nf8kKCVF/EB3OGH5EmuSFTLkw="
+        crossorigin="anonymous"></script>
+
+
+
+
+<script type="text/javascript"
+        src="/js/bundle.min.0f9c74cb78f13d1f15f33daff4037c70354f98acfbb97a6f61708966675c3cae.js"
+        integrity="sha256-D5x0y3jxPR8V8z2v9AN8cDVPmKz7uXpvYXCJZmdcPK4="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.92f21c856129f84aeb719459b3e6ac621a3032fd7b180a18c04e1d12083f8aba.js"
+        integrity="sha256-kvIchWEp&#43;ErrcZRZs&#43;asYhowMv17GAoYwE4dEgg/iro="
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

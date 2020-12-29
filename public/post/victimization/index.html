@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" data-theme=""><head>
+    <title> Mackenzie Qu | Bayesian binary regression model: a link between childhood maltreatment and aduldhood victimization </title>
+
+    
+    <meta charset="utf-8"><meta name="generator" content="Hugo 0.79.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="description" content="Academic Paper and Blogs">
+    
+    <link rel="stylesheet"
+          href="/css/style.min.28b1ee64753ae7e3e46327acb742498816170bd217640dd4bf69240697a4d5e4.css"
+          integrity="sha256-KLHuZHU65&#43;PkYyest0JJiBYXC9IXZA3Uv2kkBpek1eQ="
+          crossorigin="anonymous"
+          type="text/css">
+    
+    <link rel="stylesheet"
+        href="/css/markupHighlight.min.9755453ffb7bc4cd220f86ebb5922107b49f193cc62fc17e9785d27b33a8bf5b.css"
+        integrity="sha256-l1VFP/t7xM0iD4brtZIhB7SfGTzGL8F&#43;l4XSezOov1s="
+        crossorigin="anonymous"
+        type="text/css">
+    
+    <link rel="stylesheet" 
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" 
+    integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" 
+    crossorigin="anonymous" />
+
+    
+    <link rel="shortcut icon" href="/favicons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+
+    <link rel="canonical" href="/post/victimization/">
+
+    
+    
+    
+    
+    <script type="text/javascript"
+            src="/js/anatole-header.min.e782db136ec18d105a4552702eac49f4620d6867da3fbf808bd53e806c96be6e.js"
+            integrity="sha256-54LbE27BjRBaRVJwLqxJ9GINaGfaP7&#43;Ai9U&#43;gGyWvm4="
+            crossorigin="anonymous"></script>
+    <meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/site-feature-image.png"/>
+
+<meta name="twitter:title" content="Bayesian binary regression model: a link between childhood maltreatment and aduldhood victimization"/>
+<meta name="twitter:description" content="Abstract Childhood abuse and maltreatment have been determined to increase the risk of criminal behavior."/>
+
+</head>
+<body><div class="sidebar animated fadeInDown ">
+    <div class="logo-title">
+        <div class="title">
+            <img src="/images/prof.JPG" alt="profile picture">
+            <h3 title=""><a href="/">Mackenzie&#39;s Website</a></h3>
+            <div class="description">
+                <p>Academic Paper and Blogs</p>
+            </div>
+        </div>
+    </div>
+    <ul class="social-links">
+        
+            <li>
+                <a href="https://www.linkedin.com/in/mackenzie-qu-4864a91a2/" rel="me" aria-label="Linkedin">
+                    <i class="fab fa-linkedin fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://github.com/mackenziequ" rel="me" aria-label="GitHub">
+                    <i class="fab fa-github fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="https://www.instagram.com/" rel="me" aria-label="instagram">
+                    <i class="fab fa-instagram fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            <li>
+                <a href="mailto:mackenzie.qu@mail.utoronto.ca" rel="me" aria-label="e-mail">
+                    <i class="fas fa-envelope fa-2x" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+    </ul>
+    <div class="footer">
+        <div class="by_farbox">&copy; Mackenzie Qu 2020 </div>
+    </div>
+</div>
+
+
+
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+    
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <div class="main">
+    <div class="page-top  animated fadeInDown ">
+    <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </a>
+    <ul class="nav" id="navMenu">
+        
+        
+            
+            <li><a 
+                   href="/"
+                        
+                   title="">Home</a></li>
+        
+            
+            <li><a 
+                   href="/post/"
+                        
+                   title="">Posts</a></li>
+        
+            
+            <li><a 
+                   href="/about/"
+                        
+                   title="">About</a></li>
+        
+            
+            <li><a 
+                   href="/contact/"
+                        
+                   title="">Contact</a></li>
+        
+        
+        <li class="theme-switch-item">
+            <a class="theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+    <div class="autopagerize_page_element">
+        <div class="content">
+    <div class="post  animated fadeInDown ">
+        <div class="post-content">
+            <div class="post-title">
+                <h3>Bayesian binary regression model: a link between childhood maltreatment and aduldhood victimization</h3>
+                
+                    <div class="info">
+                        <em class="fas fa-calendar-day"></em>
+                        <span class="date">Sat, Oct 17, 2020</span>
+                        <em class="fas fa-stopwatch"></em>
+                        <span class="reading-time">18-minute read</span>
+                    </div>
+                
+            </div>
+
+            
+
+
+<div id="abstract" class="section level1">
+<h1>Abstract</h1>
+<p>Childhood abuse and maltreatment have been determined to increase the risk of criminal behavior. In this report, a Bayesian binary logistic regression model with non-informative priors is developed, however, to predict violent crimes towards whom experienced childhood abuse or witnessed spousal violence. We found that people who experienced childhood mistreatment are more likely to be the victim of violent crimes. Such finding has been overlooked by social studies, yet remains its significance as more resources are needed for child maltreatment victims, to not only minimize the risk of future criminal behavior, but also to prevent them from being continuously victimized.</p>
+</div>
+<div id="introduction" class="section level1">
+<h1>1 Introduction</h1>
+<p>Childhood maltreatment is known to have significant psychological impacts on adults. Many studies have linked childhood abuse to criminal involvement as an adult. However, the behavioral impact of childhood experience cannot be limited to just criminal involvement. In this paper, we use a Bayesian binary regression model, hoping to inspect the impact of childhood maltreatment on the other side of the spectrum - adulthood victimization.</p>
+<p>In this paper, we have explored 2014 General Social Survey: Canadians’ Safety and Security(<span class="citation">(<em>GSS Cycle 28, 2014.</em> 2014)</span>), and developed a regression model using childhood assaults and violence between parents using statistical language R(<span class="citation">R Core Team (2020)</span>) and its brms function(<span class="citation">Bürkner (2017)</span>), aiming to predict the probability of an adult being violently victimized. Our findings suggests that being abused as a child, physically or sexually, will lead to a 83% increase in probability of experiencing violent crimes. Moreover, adults whom themselves had never been abused, but witnessed violence between parents as a child, also show a higher probability of violent victimization.</p>
+<p>In summary, childhood maltreatment, regardless the extend, will increase the probability of violent victimization as an adult. The rest of the report will further explore the survey and data in section 2, model development in section 3, results in section 4, and the discussion in section 5, intending to provide a through explanation of such conclusion. The code can be accessed from: <a href="https://github.com/mackenziequ/regression/blob/main/r%20code" class="uri">https://github.com/mackenziequ/regression/blob/main/r%20code</a>. That being said, this report only demonstrates the existence of such phenomenon, we do not have enough background information to provide and behavioral or psychological reason behind this trend.</p>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="data" class="section level1">
+<h1>2 Data</h1>
+<div id="general-social-survey" class="section level2">
+<h2>General Social Survey</h2>
+<p>The data used in this report is from Canadian 2014 General Social Survey(GSS): Criminal Victimization(<span class="citation">(<em>GSS Cycle 28, 2014.</em> 2014)</span>). Upon downloading the data, we have chosen only the variables involved in this study, including Childhood Experiences, Crime Incident Report, and Demographic Derived Variables, aiming towards fitting our statistical model.</p>
+<p>In the 2014 GSS, the target population is Canadian residents aged 15 or above - excluding Residents of the Yukon, Northwest Territories, and Nunavut; and Full-time residents of institutions.</p>
+<p>GSS 2014 had received funding for an oversample. The sample size was 39,674 while the actual data collected was 33,089 after removing some confidential observations. To reach all the desired respondents, computer assisted phone calls are used to conduct the interviews. As in territories, the interviews are done in person or by telephone. Each interview takes approximately 45 minutes. Moreover, some data such as income are drawn directly from tax or other administrative files instead of questionnaires as “Statistics Canada began asking respondents for permission to link their survey information to additional data sources in 2014”(<span class="citation">Government of Canada (2019)</span>).</p>
+<p>The sample is taken with a stratified approach with probability sampling, which is done at the “province/census metropolitan area level.”(<span class="citation">Government of Canada (2014)</span>) Canada is first divided geographically into each province, and then each sample is randomly selected within each strata(ie. geographic locations). Census Metropolitan Areas for each province such as Toronto, Vancouver, Ottawa are counted as each separate strata. The remaining areas of each province are grouped to form 10 more strata. Within each strata, groups of telephone numbers associated with each dwelling are randomly selected proportional to the population, then one eligible potential respondent is selected within the identified household. Such two stage sampling design minimizes the repetition of data and maximizes the representation of the population. Stratification is also applied for the oversample of immigrants and youth. For more specific strata distributions, view Appendix[1].</p>
+<p>The survey frame was created using lists of telephone numbers in use, combined with Address Register. The two were then combined to group all telephone numbers associated with the same address. The telephone numbers without a valid address are also included in the frame. The samples are representative for all households in Canada. Note that the sample frame for the oversample was altered, more detail is discussed in Appendix[2]. For non-respondent, multiple attempts were made to encourage their participation. The overall response rate was 52.1%, which is significantly higher than the adjacent years. Non-response was adjusted by weighting the responding interviews in each strata.</p>
+<div id="weakness" class="section level3">
+<h3>Weakness</h3>
+<p>In 2014 landline method was completely abolished, resulting in failure of reaching households without a telephone. However, Statistics Canada revealed that “in 2013, the proportion of households without any phone service was estimated at 1%”(<span class="citation">Government of Canada (2014)</span>), indicating that the exclusion error caused by abolishing landlines are not as significant. Sampling error and bias, instead, are largely due to its sampling method. For instance, some key characteristics of the population are not thoroughly represented due to sampling error and lack of identification from random sampling. Secondly, the sample is limited by exclusion errors during the sampling process. Statistics Canada has mentioned that “data are not available for First Nations people living on or off reserve specifically”(<span class="citation">Government of Canada (2014)</span>) because the sampling population is not large enough to estimate for the entire population living on reserves. Due to such sampling bias, some data has to be combined and weighted in order to obtain reliable data. Moreover, sampling error was derived from the non-response rate in 2014. Although it was lower than the adjacent years, 47.1% of non-response rate might cause limitation of generalizing the sample to its population, as sample became less representative, the margin of error might increase.</p>
+</div>
+<div id="survey" class="section level3">
+<h3>Survey</h3>
+<p>The 2014 General Social Survey focused on crime and victimization. In this report, we focus on the two subtopics: Crime Incident Report and Childhood Experiences. The questionnaire of these two related subtopics are well designed, as it broadly covers the topics in detail. Crime incident Report includes personal incidents and household incidents varies from assault to motor vehicle thefts. And the Childhood Experiences includes childhood victimization, such as physical and sexual abuse, relationship with the abuser, and spousal violence. The survey was in general, extremely detailed and clear. However, it is noticeable that the refusal rate for childhood victimization questions was high due to privacy or personal reasons. 334 respondents refused to answer if they experienced physical assault before the age of 15, 394 respondents reduced to answer if they experienced sexual assault, and 366 respondents refused to state if they witnessed violence between parents. Compared to 54 respondents who had refused to answer if they are confident in police in the following section, the refusal rate was significantly higher, which may give rise to possible bias. Some more weaknesses from the data which may influence our model will also be discussed below.</p>
+</div>
+</div>
+<div id="raw-data" class="section level2">
+<h2>Raw Data</h2>
+<p>The three variables we used were abuse(figure <a href="#fig:assult">1</a>), violence(<a href="#fig:violence">2</a>), and victimization(<a href="#fig:vic">3</a>). In the survey, multiple questions were asked about childhood experiences, topic including abuse, spousal violence, and incident report. We have chosen Childhood Assault more specifically as it includes both physical and sexual violence(“assault”). Childhood maltreatment also includes witnessing violence between parents, we have chosen to include that as one of our variables(“violence”). For Criminal Activities, our variable(“victimization”) includes only personal experience, excluding any household event because they have no effect on if respondents have experienced serious violent incidents. Note that respondents who have experienced serious violent incidents(ie. sexual assault, robbery, attempted robbery, assault) in figure <a href="#fig:vic">3</a> is an extremely small proportion, as it does not include violence and assault by spouse/partner. The topic is included in the questionnaire under “Physical and Sexual violence by spouse/Partner (PSP)”, but not disclosed in the GSS data. This has a significant effect on our model, and will be shown and discussed in detail later on.</p>
+<div class="figure"><span id="fig:assult"></span>
+<img src="/post/victimization_files/figure-html/assult-1.png" alt="Childhood victimization - Experienced assault before age 15" width="576" />
+<p class="caption">
+Figure 1: Childhood victimization - Experienced assault before age 15
+</p>
+</div>
+<div class="figure"><span id="fig:violence"></span>
+<img src="/post/victimization_files/figure-html/violence-1.png" alt="Childhood victimization -  Witnessed violence between parents" width="576" />
+<p class="caption">
+Figure 2: Childhood victimization - Witnessed violence between parents
+</p>
+</div>
+<div class="figure"><span id="fig:vic"></span>
+<img src="/post/victimization_files/figure-html/vic-1.png" alt="Most serious personal incident" width="576" />
+<p class="caption">
+Figure 3: Most serious personal incident
+</p>
+</div>
+<p>Prior to modeling the data, we have made some visible changes to the variables used to help it fit into our model. We have first categorized all “valid skip”, “don’t know” and “refusal” under N/A. Then we adjust the survey answer accordingly. For Childhood Assault, we have changed “Never” to numeric 0, and combined “Both physical and sexual” and “Physical or Sexual Assault” into numerical value 1. The same adjustment was done for “witnessed violence between parents” as we are looking for either yes or no for these two variables. Upon examining “most serious personal incident”, we have categorized all personal incidents into violent incidents, and non-violent incidents. For respondents who answered “sexual assault”, “robbery”, “attempted robbery”, and “assault”, we have grouped them as 1, otherwise 0. This allows us to have fit our data into Bayesian Binary Logistic Regression.</p>
+</div>
+<div id="data-preview" class="section level2">
+<h2>Data Preview</h2>
+Below(Table <a href="#tab:data">1</a>) is a preview of out cleaned and altered data.
+<table>
+<caption>
+<span id="tab:data">Table 1: </span>Data Preview
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+abuse
+</th>
+<th style="text-align:right;">
+violence
+</th>
+<th style="text-align:right;">
+victimization
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p>Before establishing our model, we first observe the count of violent incidents for our two explanatory variables - violence and abuse in Table <a href="#tab:vv">2</a> and Table <a href="#tab:va">3</a>. From the observations, it seems that number of people experienced serious incidents differs a lot between if they have witnessed violence between parents(Table <a href="#tab:vv">2</a>, and more people experienced childhood assault are victims of incident crime(Table <a href="#tab:va">3</a>). This observation indicates that violence between parents and experienced childhood assault might be predictive of violent victimization.</p>
+<table>
+<caption>
+<span id="tab:vv">Table 2: </span>Victimization ~ Violence
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+abuse
+</th>
+<th style="text-align:left;">
+violence
+</th>
+<th style="text-align:left;">
+victimization
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Min. :0.0000
+</td>
+<td style="text-align:left;">
+Min. :0.0000
+</td>
+<td style="text-align:left;">
+Min. :0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+1st Qu.:0.0000
+</td>
+<td style="text-align:left;">
+1st Qu.:0.0000
+</td>
+<td style="text-align:left;">
+1st Qu.:0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Median :0.0000
+</td>
+<td style="text-align:left;">
+Median :0.0000
+</td>
+<td style="text-align:left;">
+Median :0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Mean :0.3216
+</td>
+<td style="text-align:left;">
+Mean :0.1119
+</td>
+<td style="text-align:left;">
+Mean :0.03442
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+3rd Qu.:1.0000
+</td>
+<td style="text-align:left;">
+3rd Qu.:0.0000
+</td>
+<td style="text-align:left;">
+3rd Qu.:0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Max. :1.0000
+</td>
+<td style="text-align:left;">
+Max. :1.0000
+</td>
+<td style="text-align:left;">
+Max. :1.00000
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<caption>
+<span id="tab:va">Table 3: </span>Victimization ~ Abuse
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:left;">
+abuse
+</th>
+<th style="text-align:left;">
+violence
+</th>
+<th style="text-align:left;">
+victimization
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Min. :0.0000
+</td>
+<td style="text-align:left;">
+Min. :0.0000
+</td>
+<td style="text-align:left;">
+Min. :0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+1st Qu.:0.0000
+</td>
+<td style="text-align:left;">
+1st Qu.:0.0000
+</td>
+<td style="text-align:left;">
+1st Qu.:0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Median :0.0000
+</td>
+<td style="text-align:left;">
+Median :0.0000
+</td>
+<td style="text-align:left;">
+Median :0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Mean :0.3216
+</td>
+<td style="text-align:left;">
+Mean :0.1119
+</td>
+<td style="text-align:left;">
+Mean :0.03442
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+3rd Qu.:1.0000
+</td>
+<td style="text-align:left;">
+3rd Qu.:0.0000
+</td>
+<td style="text-align:left;">
+3rd Qu.:0.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Max. :1.0000
+</td>
+<td style="text-align:left;">
+Max. :1.0000
+</td>
+<td style="text-align:left;">
+Max. :1.00000
+</td>
+</tr>
+</tbody>
+</table>
+<p>The data wrangling is completed in the statistical language R(<span class="citation">R Core Team (2020)</span>), using tidyverse(<span class="citation">Wickham et al. (2019)</span>), ggplot2(<span class="citation">Wickham (2016)</span>), tydyr(<span class="citation">Wickham (2020)</span>), knitr(<span class="citation">Xie (2020)</span>)(<span class="citation">Xie (2015)</span>)(<span class="citation">Xie (2014)</span>), kabelExtra(<span class="citation">Zhu (2020)</span>), janitor(<span class="citation">Firke (2020)</span>), and dectools(<span class="citation">Wickham, Hester, and Chang (2020)</span>).</p>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="model" class="section level1">
+<h1>3 Model</h1>
+<p>Our main focus is to estimate if a person will be the victim of violent crime(ie. sexual assault, robbery, physical assault). According to the summary of GSS 2014(<span class="citation">Perreault (2015)</span>), “People who suffered child maltreatment were more likely to be victims of a violent crime”, we are hereby to verify such a statement. We use the Bayesian Binary Regression Model(<span class="citation">Collett (2003)</span>) with two predictors - violence, and abuse to explain the probability of a person experiencing violent victimization based on their childhood experiences.</p>
+<p>We have used a binary model due to the response. Let <span class="math inline">\(Y_i\)</span> denote the i-th response, <span class="math inline">\(Y_i=1\)</span> when the person has experienced violent crime, and <span class="math inline">\(Y_i=0\)</span> otherwise. Each individual experiencing violent crime is modeled as a response <span class="math inline">\(Y_i\)</span> with a Bernoulli distribution, where <span class="math inline">\(\theta_i\)</span> is the probability of violent victimization:
+<span class="math display">\[Y_i|\theta_i \sim Bernoulli(\theta_i), i=1,2,3...,n \qquad (1)\]</span>
+The Bayesian model suggests we an use the following equation to find the posterior distribution:
+<span class="math display">\[p(\theta|\beta)=\frac{p(\beta|\theta)p(\theta)}{p(\beta)} \qquad (2)\]</span>
+Let <span class="math inline">\(\beta\)</span> represent a vector of unknown parameters. <span class="math inline">\(p(D|\theta)\)</span> in equation (2) is the likelihood, and <span class="math inline">\(p(\theta)\)</span> is the prior probability. More specifically, equation (2) can be interpret as:
+<span class="math display">\[posterior \propto likelihood \times prior \qquad (3)\]</span>
+In a full Bayesian approach, we would first prostate prior distribution on the regression coefficient. Little historical data or related literature was found to establish a strong informative prior. The Bayes/Laplace postulate stated that, “when nothing is known about <span class="math inline">\(\theta\)</span> in advance, let the prior <span class="math inline">\(\pi(\theta)\)</span> be a uniform distribution, that is, let all possible outcomes of <span class="math inline">\(\theta\)</span> have the same probability”. Thus, in this study, we are using a non-informative prior with Uniform distribution. Non-informative prior is not the best approach, however, due to the large sample size of 31,672, the likelihood overwhelms prior. Therefore the prior will not cause significant different.</p>
+<p>The logistic equation for our model is:
+<span class="math display">\[logit(\theta_i) = log(\frac{\theta_i}{1-\theta_1})=\beta_0+\beta_1x_{violence}+\beta_2x_{abuse} \qquad (4)\]</span>
+<span class="math inline">\(x_{violence}\)</span> and <span class="math inline">\(x_{abuse}\)</span> are our explanatory variables, each will have either “Yes”(1) or “No”(0) as an answer. And <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span> are unknown regression parameters. We can rearrange equation (4) to get the probability of response:
+<span class="math display">\[\theta_i=\frac{exp(\beta_0+\beta_1x_{violence}+\beta_2x_{abuse})}{1+exp(\beta_0+\beta_1x_{violence}+\beta_2x_{abuse})} \qquad (5)\]</span>
+Equation (5) ensures the probability of <span class="math inline">\(i-th\)</span> individual experiencing violent crime lies in the interval <span class="math inline">\([0,1]\)</span>.</p>
+<p>We then used the “brm” function from “brms”(<span class="citation">Bürkner (2017)</span>) in R to perform Bayesian model. In the argument, family is specified to be Bernoulli, aiming to achieve the result. Our model in R would be represented by:
+<span class="math display">\[serious\_incident \sim violence\_between\_parents + experienced\_childhood\_assult\]</span></p>
+Below is the summary of the model:
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
+ 
+</th>
+<th colspan="2" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
+victimization
+</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
+Predictors
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+Odds Ratios
+</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
+CI (95%)
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.02 – 0.03
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+as.factorviolence1
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.57
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+1.33 – 1.84
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+as.factorabuse1
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.31
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+2.01 – 2.62
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="2">
+31672
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+R<sup>2</sup> Bayes
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="2">
+0.009
+</td>
+</tr>
+</table>
+<p>Upon setting our model, we would like to check if the model chosen is applicable. We would first check whether an evidence for non-convergence for the two chains exists.</p>
+<div class="figure"><span id="fig:mc"></span>
+<img src="/post/victimization_files/figure-html/mc-1.png" alt="Model Convergence" width="576" />
+<p class="caption">
+Figure 4: Model Convergence
+</p>
+</div>
+<p>The two chains mix well in all the parameters in figure <a href="#fig:mc">4</a>, making it possible for us to conclude that the two chains do not diverge.</p>
+<p>We can also look at the autocorrelation plot in figure <a href="#fig:auto">5</a>, in which the chain’s correlation with successive lags of the chain are plotted. A strong autocorrelation would produce bias in variance estimates.</p>
+<div class="figure"><span id="fig:auto"></span>
+<img src="/post/victimization_files/figure-html/auto-1.png" alt="Autocorrelation" width="576" />
+<p class="caption">
+Figure 5: Autocorrelation
+</p>
+</div>
+<p>The autocorrelation parameters for both chains starts at 1, then quickly drops down to around 0, meaning that there is no evidence suggesting autocorrelation exists. Below is a quick summary of the Bayesian binary model.
+We have also used Confusion Matrix to calculate the correct classification rate, which is 96.56%. A high correct classification rate suggests that the model is well fit for the data. However, upon further examination of the confusion matrix, we have found that the model predicts all the observations to be 0. Table <a href="#tab:tab5">4</a> gives an explanation of such occurrence. Given that majority of the population was not victimized, the model is simply suggesting that no observations will bee victimized. Our data source, the survey(<span class="citation">(<em>GSS Cycle 28, 2014.</em> 2014)</span>), asked about victimization excluded crimes committed by (ex)spouse/partner. Thus the response is limited. We would observe more people experiencing violent crimes if we had access to a full data, and our result may vary.</p>
+<table>
+<caption>
+<span id="tab:tab5">Table 4: </span>Victimization
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+0
+</th>
+<th style="text-align:right;">
+1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+0
+</td>
+<td style="text-align:right;">
+30582
+</td>
+<td style="text-align:right;">
+1090
+</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div>
+</div>
+<div id="result" class="section level1">
+<h1>4 Result</h1>
+<div class="figure"><span id="fig:six"></span>
+<img src="/post/victimization_files/figure-html/six-1.png" alt="Point estimate and confidence interval" width="576" />
+<p class="caption">
+Figure 6: Point estimate and confidence interval
+</p>
+</div>
+<div class="figure"><span id="fig:sev"></span>
+<img src="/post/victimization_files/figure-html/sev-1.png" alt="Estimated probabilities of experiencing violent crimes" width="576" />
+<p class="caption">
+Figure 7: Estimated probabilities of experiencing violent crimes
+</p>
+</div>
+</div>
+<div id="discussion" class="section level1">
+<h1>5 Discussion</h1>
+<div id="data-1" class="section level2">
+<h2>Data</h2>
+<p>The variables we used is from Canadian General Social Survey 2014. Upon clearing the data to apply Bayesian regression model, we have made some changes to the observations. First of all, the response variable “serious incident” is categorized into “violent incident” and “non-violent incident”, which respectively have the value of 1 and 0. Then we have identified the explanatory variable for our issue of discussion, which is “witnessed violence between parents” and “experienced childhood assault”. The two variables covers two types of maltreatment in childhood.</p>
+</div>
+<div id="result-1" class="section level2">
+<h2>Result</h2>
+<p>From the Bayesian binary logistic regression model we have applied, figure <a href="#fig:six">6</a> and figure <a href="#fig:sev">7</a> contains the posterior probabilities given various childhood experiences. Figure <a href="#fig:six">6</a> shows the densities of parameter estimates, where the vertical line shows its point estimate, and light blue area is the 95% confidence interval. Both violence between parents and experienced childhood assault are explanatory toward the response since their credible interval does not include 0. And the estimators positively predicts the probability of a person being the victim of violent crimes as their point estimate and point interval are both positive. More specifically, witnessing violence between parents as a child increase the probability of being criminally victimized by 45%, and experiencing either physical or sexual assault will increase the probability by 83%. The curves in figure <a href="#fig:six">6</a> have very narrow shapes, meaning that the confidence interval is relatively small and that there is 95% of chance that the population falls within.</p>
+<p>Figure <a href="#fig:sev">7</a> further demonstrates the probability of a person experiencing violent crime. For an adult who had never experienced childhood maltreatment, the probability of them being a victim of violent crime is around 0.02. In contrary, an adult who was both a victim of childhood abuse and a witness of spousal violence, has a probability of 0.08 for being violently victimized. In general, both explanatory variables increases the probability of being violently victimized. However, the impact of being a direct victim of violence in childhood is more significant compared to witnessing violence between parents. The two width in figure <a href="#fig:sev">7</a> represents both 95% credibility intervals(thick line) and 68% credibility intervals(thin line). This gives us a rough idea of where the estimate lies.</p>
+<p>The findings in our study is significant for reevaluating the impact of childhood maltreatment. Over the years, studies has been done about childhood experience as a risk factor for criminal activities in the future. However, little has been done addressing childhood abuse victims are likely to become victims of violent crimes as an adult.</p>
+</div>
+<div id="weakness-and-future-studies" class="section level2">
+<h2>Weakness and Future studies</h2>
+<p>In the report, we have concluded that victimization in childhood increases the probabilities of being victimized towards violent crimes as an adult. However, we have encountered three main errors that might result in possible bias.
+The General Social Survey, to begin with, has its limitations. Regardless of the error due to non-response, the refusal of some specific questions may also cause errors. The variables we have used, are all personal and sensitive information that some individuals may not feel comfortable discussing. We could assume a significant proportion of refusals is counted towards positive response. As a result, the distribution of our variables could be altered.
+Secondly, our model design is by no means exhaustive. We have used Bayesian binary logistic regression model to predict response, yet our prior is non-informative. Kass and Wasserman (1996) stated: “Non-informative priors are formal representations of ignorance”(stat columbia). As we have little to know information of the priors, we have assumed it to be uniform so that it will have little to no impact on the posteriors distribution. Thus our result came largely from the dataset itself, making the model seemingly useless.
+Moreover, our conclusion merely indicates that childhood victimization increase the probability of experiencing violent crimes. Our result cannot explain the reason behind such phenomenon.</p>
+<p>In future studies, we can further examine the model and develop a prior distribution that would be a better fit for the data. Also in a social aspect, it is important to find out the reason behind our findings. We could have more survey questions related to childhood victimization aspect and determine what directly caused such issue.</p>
+<div style="page-break-after: always;"></div>
+</div>
+</div>
+<div id="appendix" class="section level1">
+<h1>Appendix</h1>
+<p>[1]“Only specific geographies were targeted for the oversample of immigrants and youth. For the oversample of immigrants, only the Census Metropolitan Areas of Montreal, Toronto and Vancouver were considered as separate strata. The remaining geographic areas of the ten provinces were grouped together to form the last stratum. For the oversample of youth, only the Census Metropolitan Areas of Halifax, Montreal, Ottawa, Toronto, Winnipeg, Calgary, Edmonton and Vancouver were covered by the frame and considered as separate strata. Also, for each geographic area, two strata were formed: one with the households including at least one immigrant between the age of 15 and 24 and one with the households including at least one nonimmigrant between the age of 15 and 24.” (Statistics Canada)</p>
+<p>[2] “Separate frames were created for the oversample of immigrants and for the oversample of youth. For the oversample of immigrants, the survey frame created for the regular sample was used first. A flag from an administrative source identifying the households with at least one immigrant was then added and only households flagged as having at least one immigrant were kept on the frame. The same principle was used to create the frame for the oversample of youth, but in this case, the flag identified households with at least one person between the age of 15 and 24 years old. This frame was also stratified to separate households with at least one immigrant between the age of 15 and 24 years old from the households with at least one non-immigrant (born in Canada) between the ages of 15 and 24 years old.” (Statistics Canada)</p>
+<p>[3] Link to code: <a href="https://github.com/mackenziequ/regression/blob/main/r%20code" class="uri">https://github.com/mackenziequ/regression/blob/main/r%20code</a></p>
+</div>
+<div id="reference" class="section level1 unnumbered">
+<h1>Reference</h1>
+<div id="refs" class="references">
+<div id="ref-cite_brms">
+<p>Bürkner, Paul-Christian. 2017. “brms: An R Package for Bayesian Multilevel Models Using Stan.” <em>Journal of Statistical Software</em> 80 (1): 1–28. <a href="https://doi.org/10.18637/jss.v080.i01">https://doi.org/10.18637/jss.v080.i01</a>.</p>
+</div>
+<div id="ref-cite_bayes">
+<p>Collett, David. 2003. <em>Modelling Binary Data</em>. 2nd ed. London: Chapman; Hall/CRC. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.</p>
+</div>
+<div id="ref-cite_janitor">
+<p>Firke, Sam. 2020. <em>Janitor: Simple Tools for Examining and Cleaning Dirty Data</em>. <a href="https://CRAN.R-project.org/package=janitor">https://CRAN.R-project.org/package=janitor</a>.</p>
+</div>
+<div id="ref-cite_23">
+<p>Government of Canada, Statistics Canada. 2014. <em>General Social Survey - Victimization (Gss)</em>. <a href="www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&amp;Id=148641#a3">www23.statcan.gc.ca/imdb/p2SV.pl?Function=getSurvey&amp;Id=148641#a3</a>.</p>
+</div>
+<div id="ref-cite_150">
+<p>———. 2019. <em>The General Social Survey: An Overview</em>. <a href="www150.statcan.gc.ca/n1/en/catalogue/89F0115X">www150.statcan.gc.ca/n1/en/catalogue/89F0115X</a>.</p>
+</div>
+<div id="ref-cite_data">
+<p><em>GSS Cycle 28, 2014.</em> 2014. <a href="sda-artsci-utoronto-ca.myaccess.library.utoronto.ca/sdaweb/dli2/gss/gss28/gss28/main/doc/gss2x01.htm#1.HEADING.">sda-artsci-utoronto-ca.myaccess.library.utoronto.ca/sdaweb/dli2/gss/gss28/gss28/main/doc/gss2x01.htm#1.HEADING.</a></p>
+</div>
+<div id="ref-cite_cvc">
+<p>Perreault, Samuel. 2015. <em>Criminal Victimization in Canada, 2014</em>.</p>
+</div>
+<div id="ref-citeR">
+<p>R Core Team. 2020. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.</p>
+</div>
+<div id="ref-cite_ggplot2">
+<p>Wickham, Hadley. 2016. <em>Ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York. <a href="https://ggplot2.tidyverse.org">https://ggplot2.tidyverse.org</a>.</p>
+</div>
+<div id="ref-cite_tidyr">
+<p>———. 2020. <em>Tidyr: Tidy Messy Data</em>.</p>
+</div>
+<div id="ref-cite_tidyverse">
+<p>Wickham, Hadley, Mara Averick, Jennifer Bryan, Winston Chang, Lucy D’Agostino McGowan, Romain François, Garrett Grolemund, et al. 2019. “Welcome to the tidyverse.” <em>Journal of Open Source Software</em> 4 (43): 1686. <a href="https://doi.org/10.21105/joss.01686">https://doi.org/10.21105/joss.01686</a>.</p>
+</div>
+<div id="ref-cite_devtools">
+<p>Wickham, Hadley, Jim Hester, and Winston Chang. 2020. <em>Devtools: Tools to Make Developing R Packages Easier</em>. <a href="https://CRAN.R-project.org/package=devtools">https://CRAN.R-project.org/package=devtools</a>.</p>
+</div>
+<div id="ref-cite_knitr3">
+<p>Xie, Yihui. 2014. “Knitr: A Comprehensive Tool for Reproducible Research in R.” In <em>Implementing Reproducible Computational Research</em>, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman; Hall/CRC. <a href="http://www.crcpress.com/product/isbn/9781466561595">http://www.crcpress.com/product/isbn/9781466561595</a>.</p>
+</div>
+<div id="ref-cite_knitr2">
+<p>———. 2015. <em>Dynamic Documents with R and Knitr</em>. 2nd ed. Boca Raton, Florida: Chapman; Hall/CRC. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.</p>
+</div>
+<div id="ref-cite_knitr1">
+<p>———. 2020. <em>Knitr: A General-Purpose Package for Dynamic Report Generation in R</em>. <a href="https://yihui.org/knitr/">https://yihui.org/knitr/</a>.</p>
+</div>
+<div id="ref-cite_kableExtra">
+<p>Zhu, Hao. 2020. <em>KableExtra: Construct Complex Table with ’Kable’ and Pipe Syntax</em>.</p>
+</div>
+</div>
+</div>
+</div>
+        <div class="post-footer">
+            <div class="info">
+                <span class="separator"><a class="category" href="/categories/r/">R</a></span>
+
+                <span class="separator"><a class="tag" href="/tags/bayesian/">Bayesian</a><a class="tag" href="/tags/general-social-survey/">General Social Survey</a><a class="tag" href="/tags/victimization/">victimization</a><a class="tag" href="/tags/statistics/">statistics</a><a class="tag" href="/tags/regression/">regression</a><a class="tag" href="/tags/sociology/">sociology</a></span>
+
+            </div>
+        </div>
+
+        
+            
+        
+    </div>
+
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"
+        src="/js/jquery.min.86b1e8f819ee2d9099a783e50b49dff24282545fc40773861f9126b921532e4c.js"
+        integrity="sha256-hrHo&#43;BnuLZCZp4PlC0nf8kKCVF/EB3OGH5EmuSFTLkw="
+        crossorigin="anonymous"></script>
+
+
+
+
+<script type="text/javascript"
+        src="/js/bundle.min.0f9c74cb78f13d1f15f33daff4037c70354f98acfbb97a6f61708966675c3cae.js"
+        integrity="sha256-D5x0y3jxPR8V8z2v9AN8cDVPmKz7uXpvYXCJZmdcPK4="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript"
+        src="/js/medium-zoom.min.92f21c856129f84aeb719459b3e6ac621a3032fd7b180a18c04e1d12083f8aba.js"
+        integrity="sha256-kvIchWEp&#43;ErrcZRZs&#43;asYhowMv17GAoYwE4dEgg/iro="
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

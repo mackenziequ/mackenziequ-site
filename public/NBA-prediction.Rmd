@@ -1,0 +1,15 @@
+---
+title: 'Multiple linear regression: A data driven approach to predicting midseason
+  NBA point spreads'
+author: Mackenzie Qu
+date: '2020-12-22'
+slug: NBA-prediction
+categories: []
+tags:
+  - basketball
+  - linear regression
+  - NBA prediction
+  - pointspread
+  - statistics
+---
+

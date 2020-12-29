@@ -1,0 +1,19 @@
+---
+title: 'Multilevel Regression with Post Stratification: popular vote points to the
+  victory of Joe Biden'
+author:
+  - Mackenzie Qu
+  - Bianca Pokhrel
+  - Zhuoqian Li
+date: '2020-11-03'
+slug: us-election
+categories:
+  - R
+tags:
+  - forecasting
+  - US 2020 election
+  - Trump
+  - Biden
+  - Multilevel Regression with Post Stratification
+---
+

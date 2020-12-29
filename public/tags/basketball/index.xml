@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>basketball on Mackenzie Qu Website</title>
+    <link>/tags/basketball/</link>
+    <description>Recent content in basketball on Mackenzie Qu Website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 22 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/tags/basketball/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multiple linear regression: A data driven approach to predicting midseason NBA point spreads</title>
+      <link>/post/nba-prediction/</link>
+      <pubDate>Tue, 22 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/nba-prediction/</guid>
+      <description>Abstract Basketball has gained millions of passionate fans over the years, and its intensity often extends beyond the courts into various bets.</description>
+    </item>
+    
+  </channel>
+</rss>

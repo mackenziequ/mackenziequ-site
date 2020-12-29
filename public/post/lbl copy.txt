@@ -1,0 +1,85 @@
+*******************************************************************
+*  Stata "do-file" file with labels and missing data specifications
+*  Created by ddltox on Oct 17, 2020  (Sat 09:08 PM EDT)
+*  DDL source file: "/web/sda.artsci.utoronto.ca/htdocs/sdaweb/tmpdir/AAcHtRIX.txt".
+*
+*  Note that the data dictionary is given at the end of this file.
+*  Put the dictionary into a separate file (by editing this file).
+*  Then specify below the name of the dictionary file.
+*
+*  DDL file gives the following dataset description:
+*    Records per case: 1
+*    Record length:    44
+*******************************************************************
+
+
+label data "GSS Cycle 28, 2014 Main"
+
+#delimit ;
+label define cexabu    1 "Never" 2 "Both physical and sexual abuse" 
+                       3 "Physical or sexual abuse" 6 "Valid skip" 
+                       7 "Don't know" 8 "Refusal" 9 "Not stated" ;
+label define cexphys   1 "Never" 2 "Yes, at least once" 6 "Valid skip" 
+                       7 "Don't know" 8 "Refusal" 9 "Not stated" ;
+label define cexsex    1 "Never" 2 "Yes, at least once" 6 "Valid skip" 
+                       7 "Don't know" 8 "Refusal" 9 "Not stated" ;
+label define cex_070a  1 "Yes" 2 "No" 6 "Valid skip" 7 "Don't know" 
+                       8 "Refusal" 9 "Not stated" ;
+label define cex_070b  1 "Yes" 2 "No" 6 "Valid skip" 7 "Don't know" 
+                       8 "Refusal" 9 "Not stated" ;
+label define cex_070c  1 "Yes" 2 "No" 6 "Valid skip" 7 "Don't know" 
+                       8 "Refusal" 9 "Not stated" ;
+label define cex_080   1 "Never" 2 "1 or 2 times" 3 "3 to 5 times" 
+                       4 "6 to 10 times" 5 "More than 10 times" 
+                       6 "Valid skip" 7 "Don't know" 8 "Refusal" 
+                       9 "Not stated" ;
+label define mshsd     405 "Break and enter" 406 "Attempted break and enter" 
+                       507 "Motor vehicle theft" 
+                       508 "Part of a motor vehicle theft" 
+                       509 "Attempted motor vehicle (parts) theft" 
+                       711 "Theft of household property" 
+                       712 "Attempted theft of household property" 
+                       813 "Vandalism" 994 "Not asked - no crime reported" 
+                       995 "Unclassifiable" 996 "Valid skip" 997 "Don't know" 
+                       998 "Refusal" 999 "Not stated" ;
+label define msper     101 "Sexual assault" 202 "Robbery" 
+                       203 "Attempted robbery" 304 "Assault" 
+                       405 "Break and enter" 406 "Attempted break and enter" 
+                       507 "Motor vehicle theft" 
+                       508 "Part of a motor vehicle theft" 
+                       509 "Attempted motor vehicle (parts) theft" 
+                       609 "Theft of personal property" 
+                       610 "Attempted theft of personal property" 
+                       711 "Theft of household property" 
+                       712 "Attempted theft of household property" 
+                       813 "Vandalism" 994 "Not asked - no crime reported" 
+                       995 "Unclassifiable" 996 "Valid skip" 997 "Don't know" 
+                       998 "Refusal" 999 "Not stated" ;
+label define msvic     101 "Sexual assault" 202 "Robbery" 
+                       203 "Attempted robbery" 304 "Assault" 
+                       405 "Break and enter" 406 "Attempted break and enter" 
+                       507 "Motor vehicle theft" 
+                       508 "Part of a motor vehicle theft" 
+                       509 "Attempted motor vehicle (parts) theft" 
+                       609 "Theft of personal property" 
+                       610 "Attempted theft of personal property" 
+                       711 "Theft of household property" 
+                       712 "Attempted theft of household property" 
+                       813 "Vandalism" 994 "Not asked - no crime reported" 
+                       995 "Unclassifiable" 996 "Valid skip" 997 "Don't know" 
+                       998 "Refusal" 999 "Not stated" ;
+label define agegr10   1 "15 to 24" 2 "25 to 34" 3 "35 to 44" 4 "45 to 54" 
+                       5 "55 to 64" 6 "65 to 74" 7 "75 years and older" 
+                       96 "Valid skip" 97 "Don't know" 98 "Refusal" 
+                       99 "Not stated" ;
+label define luc_rst   1 "Larger urban population centres (CMA/CA)" 
+                       2 "Rural areas/small population centres (non-CMA/CA)" 
+                       3 "Prince Edward Island" 6 "Valid skip" 7 "Don't know" 
+                       8 "Refusal" 9 "Not stated" ;
+label define region    1 "Atlantic region" 2 "Quebec" 3 "Ontario" 
+                       4 "Prairie region" 5 "British Columbia" 
+                       6 "Territories" 96 "Valid skip" 97 "Don't know" 
+                       98 "Refusal" 99 "Not stated" ;
+label define sex       1 "Male" 2 "Female" 6 "Valid skip" 7 "Don't know" 
+                       8 "Refusal" 9 "Not stated" ;
+

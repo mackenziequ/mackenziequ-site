@@ -1,0 +1,34 @@
+dictionary using Y {
+*****************************************************************
+*  Replace 'Y' with the name of the data file.
+*  The default suffix is '.raw'.
+*
+*  Put this dictionary into a separate file (with the suffix .dct).
+*  (The first line of the dictionary file must contain the
+*  'dictionary' command.)
+*
+*  Then edit the name of that dictionary file into the 'do-file'
+*  portion of the STATA definitions.
+*******************************************************************
+*  Records per case:
+_lines(1)
+
+_line(1)
+
+_column(1)     long  CASEID             %5f    ""
+_column(7)     int   cexabu   :cexabu   %1f    "Childhood victimization - Experienced assault before age 15"
+_column(9)     int   cexphys  :cexphys  %1f    "Childhood victimization - Experienced physical assault before age 15"
+_column(11)    int   cexsex   :cexsex   %1f    "Childhood victimization - Experienced sexual assault before age 15"
+_column(13)    int   cex_070a :cex_070a %1f    "Childhood victimization - Reported to police"
+_column(15)    int   cex_070b :cex_070b %1f    "Childhood victimization - Reported to child protection services"
+_column(17)    int   cex_070c :cex_070c %1f    "Childhood victimization - No report"
+_column(19)    int   cex_080  :cex_080  %1f    "Childhood vict. - Witnessed violence between parents"
+_column(21)    int   mshsd    :mshsd    %3f    "Most serious household victimization"
+_column(25)    int   msper    :msper    %3f    "Most serious personal incident - Excludes (ex-)spousal/partner"
+_column(29)    int   msvic    :msvic    %3f    "Most serious incident - Excludes (ex-)spousal/(ex-)partner"
+_column(33)    int   agegr10  :agegr10  %1f    "Age group of respondent (groups of 10)"
+_column(35)    int   luc_rst  :luc_rst  %1f    "Population centres indicator"
+_column(38)    str2  prv                %2s    "Province of residence"
+_column(42)    int   region   :region   %1f    "Region of residence of the respondent"
+_column(44)    int   sex      :sex      %1f    "Sex of respondent"
+}

@@ -1,0 +1,15 @@
+---
+title: 'Bayesian binary regression model: a link between childhood maltreatment and
+  aduldhood victimization'
+author: Mackenzie Qu
+date: '2020-10-17'
+slug: victimization
+categories:
+  - R
+tags:
+  - Bayesian
+  - General Social Survey
+  - Victimization
+  - Regression
+---
+

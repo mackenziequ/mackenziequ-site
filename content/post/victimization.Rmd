@@ -1,0 +1,465 @@
+---
+title: 'Bayesian binary regression model: a link between childhood maltreatment and
+  aduldhood victimization'
+author: Mackenzie Qu
+date: '2020-10-17'
+slug: victimization
+categories:
+  - R
+tags:
+  - Bayesian
+  - General Social Survey
+  - victimization
+  - statistics
+  - regression
+  - sociology
+output:
+  bookdown::pdf_document2: 
+    citation_package: natbib
+    fig_caption: yes
+    tab_caption: yes
+  pdf_document: default
+bibliography: referencevic.bib
+---
+
+# Abstract 
+
+Childhood abuse and maltreatment have been determined to increase the risk of criminal behavior. In this report, a Bayesian binary logistic regression model with non-informative priors is developed, however, to predict violent crimes towards whom experienced childhood abuse or witnessed spousal violence. We found that people who experienced childhood mistreatment are more likely to be the victim of violent crimes. Such finding has been overlooked by social studies, yet remains its significance as more resources are needed for child maltreatment victims, to not only minimize the risk of future criminal behavior, but also to prevent them from being continuously victimized.
+
+# 1 Introduction
+
+Childhood maltreatment is known to have significant psychological impacts on adults. Many studies have linked childhood abuse to criminal involvement as an adult. However, the behavioral impact of childhood experience cannot be limited to just criminal involvement. In this paper, we use a Bayesian binary regression model, hoping to inspect the impact of childhood maltreatment on the other side of the spectrum - adulthood victimization. 
+
+In this paper, we have explored 2014 General Social Survey: Canadians’ Safety and Security(@cite_data), and developed a regression model using childhood assaults and violence between parents using statistical language R(@citeR) and its brms function(@cite_brms), aiming to predict the probability of an adult being violently victimized. Our findings suggests that being abused as a child, physically or sexually, will lead to a 83% increase in probability of experiencing violent crimes. Moreover, adults whom themselves had never been abused, but witnessed violence between parents as a child, also show a higher probability of violent victimization. 
+
+In summary, childhood maltreatment, regardless the extend, will increase the probability of violent victimization as an adult. The rest of the report will further explore the survey and data in section 2, model development in section 3, results in section 4, and the discussion in section 5, intending to provide a through explanation of such conclusion. The code can be accessed from: https://github.com/mackenziequ/regression/blob/main/r%20code. That being said, this report only demonstrates the existence of such phenomenon, we do not have enough background information to provide and behavioral or psychological reason behind this trend. 
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#Load Data
+## Load packages
+library(sjPlot)
+library(insight)
+library(httr)
+library(tidyverse)
+library(janitor)
+library(devtools)
+library(brms)
+library(modelr)
+library(tidybayes)
+library(tidyr)
+library(ROCR)
+library(knitr)
+library(kableExtra)
+library(pander)
+## Load the data dictionary and the raw data and correct the variable names
+raw_data<- read_csv("AAiQ1cVQ.csv")
+dict<- read_lines("dict.txt", skip = 18)
+labels_raw<- read_file("lbl.txt")
+```
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+# Data Clean Up
+#### Set-up the dictionary ####
+# a variable name and a variable definition
+variable_descriptions <- as_tibble(dict) %>% 
+  filter(value!="}") %>% 
+  mutate(value = str_replace(value, ".+%[0-9].*f[ ]{2,}", "")) %>% 
+  mutate(value = str_remove_all(value, "\"")) %>% 
+  rename(variable_description = value) %>% 
+  bind_cols(tibble(variable_name = colnames(raw_data)[-1]))
+
+# a variable name and the possible values
+labels_raw_tibble <- as_tibble(str_split(labels_raw, ";")[[1]]) %>% 
+  filter(row_number()!=1) %>% 
+  mutate(value = str_remove(value, "\nlabel define ")) %>% 
+  mutate(value = str_replace(value, "[ ]{2,}", "XXX")) %>% 
+  mutate(splits = str_split(value, "XXX")) %>% 
+  rowwise() %>% 
+  mutate(variable_name = splits[1], cases = splits[2]) %>% 
+  mutate(cases = str_replace_all(cases, "\n [ ]{2,}", "")) %>%
+  select(variable_name, cases) %>% 
+  drop_na()
+
+
+#the variable name and the different options
+labels_raw_tibble <- labels_raw_tibble %>% 
+  mutate(splits = str_split(cases, "[ ]{0,}\"[ ]{0,}"))
+
+
+# The function sets up the regex
+add_cw_text <- function(x, y){
+  if(!is.na(as.numeric(x))){
+    x_new <- paste0(y, "==", x,"~")
+  }
+  else{
+    x_new <- paste0("\"",x,"\",")
+  }
+  return(x_new)
+}
+
+cw_statements <- labels_raw_tibble %>% 
+  rowwise() %>% 
+  mutate(splits_with_cw_text = list(modify(splits, add_cw_text, y = 
+                                             variable_name))) %>% 
+  mutate(cw_statement = paste(splits_with_cw_text, collapse = "")) %>% 
+  mutate(cw_statement = paste0("case_when(", cw_statement,"TRUE~\"NA\")")) %>% 
+  mutate(cw_statement = str_replace(cw_statement, ",\"\",",",")) %>% 
+  select(variable_name, cw_statement)
+
+#finally cleanup of the regex.
+cw_statements <- 
+  cw_statements %>% 
+  mutate(variable_name = str_remove_all(variable_name, "\\r")) %>% 
+  mutate(cw_statement = str_remove_all(cw_statement, "\\r"))
+
+gss <- raw_data %>% 
+  select(CASEID,
+         cexabu,
+         cexphys,
+         cexsex,
+         cex_070a,
+         cex_070b,
+         cex_070c,
+         cex_080,
+         mshsd,
+         msper,
+         msvic,
+         agegr10,
+         luc_rst,
+         prv,
+         region,
+         sex) %>%
+  mutate_at(vars(cexabu:sex), .funs = funs(ifelse(.>=996, NA, .))) %>% 
+  mutate_at(.vars = vars(cexabu:sex),
+            .funs = funs(eval(parse(text = cw_statements %>%
+                                      filter(variable_name==
+                                               deparse(substitute(.))) %>%
+                                      select(cw_statement) %>%
+                                      pull()))))
+
+
+# Fix the names
+gss <- gss %>% 
+  clean_names() %>% 
+  rename(abuse = cexabu,
+         physical_childhood_assault = cexphys,
+         sexual_childhood_assault = cexsex,
+         reported_to_police = cex_070a,
+         reported_to_cps = cex_070b,
+         no_report = cex_070c,
+         violence = cex_080,
+         household_victimization = mshsd,
+         personal_incident = msper,
+         victimization = msvic,
+         age = agegr10,
+         population_centres_indicator = luc_rst,
+         region = region,
+         sex = sex)
+
+### Clean Up ###
+#Change invalid choices to N/A
+gss <- gss %>% 
+  mutate_at(vars(abuse:sex), 
+            .funs = funs(ifelse(.=="Valid skip"|.=="Refusal"|.=="Not stated" 
+                                |.=="Don't know", "NA", .))) 
+
+#Make the values of variables used numeric so it's more clear to us
+gss <- gss %>%
+  mutate_at(vars(abuse), .funs = 
+              funs(case_when(.== "Never" ~ 0,
+                             .== "Both physical and sexual abuse" ~ 1,
+                             .== "Physical or sexual abuse"~ 1,
+                             .== "NA"~as.numeric(NA)
+                             )))
+
+
+
+gss <- gss %>%
+  mutate_at(vars(victimization), .funs = 
+              funs(case_when(.== "Sexual assault" ~ 1,
+                             .== "Robbery" ~ 1,
+                             .== "Attempted robbery"~ 1,
+                             .== "Assault"~1,
+                             .== "Break and enter"~0,
+                             .== "Attempted break and enter"~0,
+                             .== "Motor vehicle theft"~0,
+                             .== "Part of a motor vehicle theft"~0,
+                             .== "Attempted motor vehicle (parts) thef"~0,
+                             .== "Theft of personal property"~0,
+                             .== "Attempted theft of personal property"~0,
+                             .== "Theft of household property"~0,
+                             .== "Attempted theft of household property"~0,
+                             .== "Vandalism"~0,
+                             .== "Not asked - no crime reported" ~0,
+                             .== "Unclassifiable"~0,
+                             .== "NA"~as.numeric(NA)
+                             )))
+gss <- gss %>%
+  mutate_at(vars(violence), .funs = 
+              funs(case_when(.== "Never" ~ 0,
+                             .== "1 or 2 times" ~ 1,
+                             .== "3 to 5 times"~ 1,
+                             .== "6 to 10 times"~ 1,
+                             .== "More than 10 times"~ 1,
+                             .== "NA"~as.numeric(NA)
+                             )))
+
+# Remove N/A choices for the variables used in model, to match
+#the length
+gss<-gss%>%
+  drop_na(abuse, violence, victimization)
+```
+
+\newpage
+# 2 Data
+## General Social Survey
+
+The data used in this report is from Canadian 2014 General Social Survey(GSS): Criminal Victimization(@cite_data). Upon downloading the data, we have chosen only the variables involved in this study, including Childhood Experiences, Crime Incident Report, and Demographic Derived Variables, aiming towards fitting our statistical model.
+
+In the 2014 GSS, the target population is Canadian residents aged 15 or above - excluding Residents of the Yukon, Northwest Territories, and Nunavut; and Full-time residents of institutions. 
+
+GSS 2014 had received funding for an oversample. The sample size was 39,674 while the actual data collected was 33,089 after removing some confidential observations. To reach all the desired respondents, computer assisted phone calls are used to conduct the interviews. As in territories, the interviews are done in person or by telephone. Each interview takes approximately 45 minutes. Moreover, some data such as income are drawn directly from tax or other administrative files instead of questionnaires as “Statistics Canada began asking respondents for permission to link their survey information to additional data sources in 2014 ”(@cite_150).
+
+
+The sample is taken with a stratified approach with probability sampling, which is done at the “province/census metropolitan area level.”(@cite_23)  Canada is first divided geographically into each province, and then each sample is randomly selected within each strata(ie. geographic locations). Census Metropolitan Areas for each province such as Toronto, Vancouver, Ottawa are counted as each separate strata. The remaining areas of each province are grouped to form 10 more strata. Within each strata, groups of telephone numbers associated with each dwelling are randomly selected proportional to the population, then one eligible potential respondent is selected within the identified household. Such two stage sampling design minimizes the repetition of data and maximizes the representation of the population. Stratification is also applied for the oversample of immigrants and youth. For more specific strata distributions, view Appendix[1].
+
+The survey frame was created using lists of telephone numbers in use, combined with Address Register. The two were then combined to group all telephone numbers associated with the same address. The telephone numbers without a valid address are also included in the frame. The samples are representative for all households in Canada. Note that the sample frame for the oversample was altered, more detail is discussed in Appendix[2]. For non-respondent, multiple attempts were made to encourage their participation. The overall response rate was 52.1%, which is significantly higher than the adjacent years. Non-response was adjusted by weighting the responding interviews in each strata.
+
+### Weakness
+
+In 2014 landline method was completely abolished, resulting in failure of reaching households without a telephone. However, Statistics Canada revealed that “in 2013, the proportion of households without any phone service was estimated at 1%”(@cite_23), indicating that the exclusion error caused by abolishing landlines are not as significant. Sampling error and bias, instead, are largely due to its sampling method. For instance, some key characteristics of the population are not thoroughly represented due to sampling error and lack of identification from random sampling. Secondly, the sample is limited by exclusion errors during the sampling process. Statistics Canada has mentioned that “data are not available for First Nations people living on or off reserve specifically”(@cite_23) because the sampling population is not large enough to estimate for the entire population living on reserves. Due to such sampling bias, some data has to be combined and weighted in order to obtain reliable data. Moreover, sampling error was derived from the non-response rate in 2014. Although it was lower than the adjacent years, 47.1% of non-response rate might cause limitation of generalizing the sample to its population, as sample became less representative, the margin of error might increase. 
+
+### Survey
+
+The 2014 General Social Survey focused on crime and victimization. In this report, we focus on the two subtopics: Crime Incident Report and Childhood Experiences. The questionnaire of these two related subtopics are well designed, as it broadly covers the topics in detail. Crime incident Report includes personal incidents and household incidents varies from assault to motor vehicle thefts. And the Childhood Experiences includes childhood victimization, such as physical and sexual abuse, relationship with the abuser, and spousal violence. The survey was in general, extremely detailed and clear. However, it is noticeable that the refusal rate for childhood victimization questions was high due to privacy or personal reasons. 334 respondents refused to answer if they experienced physical assault before the age of 15, 394 respondents reduced to answer if they experienced sexual assault, and 366 respondents refused to state if they witnessed violence between parents. Compared to 54 respondents who had refused to answer if they are confident in police in the following section, the refusal rate was significantly higher, which may give rise to possible bias. Some more weaknesses from the data which may influence our model will also be discussed below. 
+
+
+## Raw Data
+
+The three variables we used were abuse(figure \@ref(fig:assult)), violence(\@ref(fig:violence)), and victimization(\@ref(fig:vic)). In the survey, multiple questions were asked about childhood experiences, topic including abuse, spousal violence, and incident report. We have chosen Childhood Assault more specifically as it includes both physical and sexual violence("assault"). Childhood maltreatment also includes witnessing violence between parents, we have chosen to include that as one of our variables("violence"). For Criminal Activities, our variable("victimization") includes only personal experience, excluding any household event because they have no effect on if respondents have experienced serious violent incidents. Note that respondents who have experienced serious violent incidents(ie. sexual assault, robbery, attempted robbery, assault) in figure \@ref(fig:vic) is an extremely small proportion, as it does not include violence and assault by spouse/partner. The topic is included in the questionnaire under “Physical and Sexual violence by spouse/Partner (PSP)”, but not disclosed in the GSS data. This has a significant effect on our model, and will be shown and discussed in detail later on.
+
+
+```{r assult, fig.cap="Childhood victimization - Experienced assault before age 15", echo=FALSE, fig.dim=c(6,4)}
+ggplot(raw_data, aes(x = factor(cexabu, level = c(1,2,3,7,8)), fill = cexabu))+ 
+  geom_bar()+
+  scale_x_discrete( "", labels = c("Never", 
+                                   "Both physical \n and \n sexual assualt",
+                                   "Physical \n or sexual\n assult",
+                                   "Don't \n know",
+                                   "Refusal"))+
+  theme(legend.position="none")+
+  theme(axis.text.x= element_text(colour = "black", size = 12))
+```
+
+
+```{r violence, fig.cap="Childhood victimization -  Witnessed violence between parents", echo=FALSE, fig.dim=c(6,4)}
+ggplot(raw_data, aes(x = factor(cex_080, level = c(1,2,3,4,5,6,7,8,9)), 
+                     fill = cex_080))+ 
+  geom_bar()+
+  scale_x_discrete( "", labels = c("Never",
+                                   "1 or \n 2 times",
+                                   "3 to \n 5 times",
+                                   "6 to \n 10 times",
+                                   "More than \n 10 times",
+                                   "Don't \n know",
+                                   "Refusal",
+                                   "Not \n stated"))+
+  theme(legend.position="none")+
+  theme(axis.text.x= element_text(colour = "black", size = 12))
+```
+
+
+```{r vic, fig.cap="Most serious personal incident", echo=FALSE, fig.dim=c(6,4)}
+ggplot(raw_data, aes(x = factor(msper, level = c(101,202,203,
+                                                 304,609,610,994,995)), 
+                     fill = msper))+ 
+  geom_bar()+
+  scale_x_discrete( "", labels = c("Sexual \n assault",
+                                   "Robbery",
+                                   "Attempted \n robbery",
+                                   "Assault",
+                                   "Theft \n of \n personal \n property",
+                                   "Attempted \n theft of \n personal \n propert",
+                                   "Not \n asked -\n  no crime \n reported",
+                                   "Unclassifiable"))+
+  theme(legend.position="none")+
+  theme(axis.text.x= element_text(colour = "black", size = 10))
+```
+
+
+
+Prior to modeling the data, we have made some visible changes to the variables used to help it fit into our model. We have first categorized all “valid skip”, “don’t know” and “refusal” under N/A. Then we adjust the survey answer accordingly.  For Childhood Assault, we have changed  “Never” to numeric 0, and combined “Both physical and sexual” and “Physical or Sexual Assault” into numerical value 1. The same adjustment was done for “witnessed violence between parents” as we are looking for either yes or no for these two variables. Upon examining “most serious personal incident”, we have categorized all personal incidents into violent incidents, and non-violent incidents. For respondents who answered “sexual assault”, “robbery”, “attempted robbery”, and “assault”, we have grouped them as 1, otherwise 0. This allows us to have fit our data into Bayesian Binary Logistic Regression. 
+
+## Data Preview
+Below(Table \@ref(tab:data)) is a preview of out cleaned and altered data. 
+```{r data, echo=FALSE}
+gss<-tibble(abuse = gss$abuse, violence = gss$violence, victimization = gss$victimization)
+
+knitr::kable(head(gss), caption = "Data Preview")
+```
+
+
+Before establishing our model, we first observe the count of violent incidents for our two explanatory variables - violence and abuse in Table \@ref(tab:vv) and Table \@ref(tab:va). From the observations, it seems that number of people experienced serious incidents differs a lot between if they have witnessed violence between parents(Table \@ref(tab:vv), and more people experienced childhood assault are victims of incident crime(Table \@ref(tab:va)). This observation indicates that violence between parents and experienced childhood assault might be predictive of violent victimization. 
+
+```{r vv, echo=FALSE, message=FALSE, warning=FALSE}
+# Make count into table to observe difference
+knitr::kable(gss%>%
+  group_by(violence)%>%
+  summary(victimization = sum(victimization, na.rm = TRUE)),
+  caption = "Victimization ~ Violence")
+```
+
+
+
+
+```{r va, echo=FALSE, message=FALSE, warning=FALSE}
+# Make count into table to observe difference
+knitr::kable(gss%>%
+  group_by(abuse)%>%
+    summary(victimization = sum(victimization, na.rm = TRUE)),
+  caption = "Victimization ~ Abuse")
+```
+
+The data wrangling is completed in the statistical language R(@citeR), using tidyverse(@cite_tidyverse), ggplot2(@cite_ggplot2), tydyr(@cite_tidyr), knitr(@cite_knitr1)(@cite_knitr2)(@cite_knitr3), kabelExtra(@cite_kableExtra), janitor(@cite_janitor), and dectools(@cite_devtools).
+
+\newpage
+# 3 Model
+
+Our main focus is to estimate if a person will be the victim of violent crime(ie. sexual assault, robbery, physical assault). According to the summary of GSS 2014(@cite_cvc), “People who suffered child maltreatment were more likely to be victims of a violent crime”, we are hereby to verify such a statement. We use the Bayesian Binary Regression Model(@cite_bayes) with two predictors - violence, and abuse to explain the probability of a person experiencing violent victimization based on their childhood experiences. 
+
+We have used a binary model due to the response. Let $Y_i$ denote the i-th response, $Y_i=1$ when the person has experienced violent crime, and $Y_i=0$ otherwise. Each individual experiencing violent crime is modeled as a response $Y_i$ with a Bernoulli distribution, where $\theta_i$ is the probability of violent victimization:
+$$Y_i|\theta_i \sim Bernoulli(\theta_i), i=1,2,3...,n \qquad (1)$$
+The Bayesian model suggests we an use the following equation to find the posterior distribution:
+$$p(\theta|\beta)=\frac{p(\beta|\theta)p(\theta)}{p(\beta)} \qquad (2)$$
+Let $\beta$ represent a vector of unknown parameters. $p(D|\theta)$ in equation (2) is the likelihood, and $p(\theta)$ is the prior probability. More specifically, equation (2) can be interpret as:
+$$posterior \propto likelihood \times prior \qquad (3)$$
+In a full Bayesian approach, we would first prostate prior distribution on the regression coefficient. Little historical data or related literature was found to establish a strong informative prior. The Bayes/Laplace postulate stated that, "when nothing is known about $\theta$ in advance, let the prior $\pi(\theta)$ be a uniform distribution, that is, let all possible outcomes of $\theta$ have the same probability". Thus, in this study, we are using a non-informative prior with Uniform distribution. Non-informative prior is not the best approach, however, due to the large sample size of 31,672, the likelihood overwhelms prior. Therefore the prior will not cause significant different. 
+
+The logistic equation for our model is:
+$$logit(\theta_i) = log(\frac{\theta_i}{1-\theta_1})=\beta_0+\beta_1x_{violence}+\beta_2x_{abuse} \qquad (4)$$
+$x_{violence}$ and $x_{abuse}$ are our explanatory variables, each will have either "Yes"(1) or "No"(0) as an answer. And $\beta_0$, $\beta_1$ are unknown regression parameters. We can rearrange equation (4) to get the probability of response:
+$$\theta_i=\frac{exp(\beta_0+\beta_1x_{violence}+\beta_2x_{abuse})}{1+exp(\beta_0+\beta_1x_{violence}+\beta_2x_{abuse})} \qquad (5)$$
+Equation (5) ensures the probability of $i-th$ individual experiencing violent crime lies in the interval $[0,1]$. 
+
+
+We then used the "brm" function from "brms"(@cite_brms) in R to perform Bayesian model. In the argument, family is specified to be Bernoulli, aiming to achieve the result. Our model in R would be represented by:
+$$serious\_incident \sim violence\_between\_parents + experienced\_childhood\_assult$$
+
+```{r, include=FALSE}
+Bayes_Model_Binary <- brm(formula = victimization~  as.factor(violence)
+                          + as.factor(abuse),
+                          data=gss, 
+                          chains = 2,
+                          family = bernoulli(link = "logit"),
+                          seed = 123)
+```
+
+
+
+Below is the summary of the model:
+```{r, echo=FALSE}
+tab_model(Bayes_Model_Binary)
+```
+
+
+Upon setting our model, we would like to check if the model chosen is applicable. We would first check whether an evidence for non-convergence for the two chains exists.
+
+```{r mc,fig.cap="Model Convergence" ,echo=FALSE, message=FALSE, fig.dim=c(6,4)}
+mcmc_plot(Bayes_Model_Binary, 
+         type = "trace")+
+  labs(title = "Trace", tag = "(4)")
+```
+
+
+The two chains mix well in all the parameters in figure \@ref(fig:mc), making it possible for us to conclude that the two chains do not diverge. 
+
+We can also look at the autocorrelation plot in figure \@ref(fig:auto), in which the chain’s correlation with successive lags of the chain are plotted. A strong autocorrelation would produce bias in variance estimates.
+
+```{r auto, fig.cap="Autocorrelation" ,echo=FALSE, message=FALSE, fig.dim=c(6,4)}
+mcmc_plot(Bayes_Model_Binary, 
+         type = "acf_bar")+
+  labs(title = "Autocorrelation", tag = "(5)")
+```
+
+
+The autocorrelation parameters for both chains starts at 1, then quickly drops down to around 0, meaning that there is no evidence suggesting autocorrelation exists. Below is a quick summary of the Bayesian binary model.
+We have also used Confusion Matrix to calculate the correct classification rate, which is 96.56%. A high correct classification rate suggests that the model is well fit for the data. However, upon further examination of the confusion matrix, we have found that the model predicts all the observations to be 0. Table \@ref(tab:tab5) gives an explanation of such occurrence. Given that majority of the population was not victimized, the model is simply suggesting that no observations will bee victimized. Our data source, the survey(@cite_data), asked about victimization excluded crimes committed by (ex)spouse/partner. Thus the response is limited. We would observe more people experiencing violent crimes if we had access to a full data, and our result may vary.
+
+```{r, include=FALSE}
+Pred <- predict(Bayes_Model_Binary, type = "response")
+Pred <- if_else(Pred[,1] > 0.5, 1, 0)
+ConfusionMatrix <- table(Pred, pull(gss, victimization)) #`pull` results in a vector
+#correct classification rate
+sum(diag(ConfusionMatrix))/sum(ConfusionMatrix)
+```
+
+```{r tab5, echo=FALSE}
+knitr::kable(ConfusionMatrix, caption = "Victimization")
+```
+
+
+\newpage
+# 4 Result
+
+
+```{r six, fig.cap="Point estimate and confidence interval", echo=FALSE,message=FALSE, fig.dim=c(6,4)}
+mcmc_plot(Bayes_Model_Binary, 
+         type = "areas",
+         prob = 0.95)+
+  scale_y_discrete(labels = c("b_Intercept" = "Intercept", "b_as.factorviolence1" = "Spousal Violence", "b_as.factorabuse1" = "Childhood Abuse"))
+```
+
+
+```{r sev, fig.cap="Estimated probabilities of experiencing violent crimes", echo=FALSE, message=FALSE, fig.dim=c(6,4)}
+gss %>%
+  data_grid(violence, abuse) %>%
+  add_fitted_draws(Bayes_Model_Binary) %>%
+  ggplot(aes(x = .value, y = interaction(violence, abuse))) +
+  stat_pointinterval(.width = c(.68, .95)) +
+  coord_flip() +
+  xlab("Predicted probability of experiencing violent crimes") +
+  ylab("Childhood Experience")+
+  scale_y_discrete(labels = c("0.0"= "Never \n witnessed violence \n Never abused","1.0" = "Witnessed \n violence \n Never abused","0.1"= "Experienced abuse \n Never \n witnessed violence ","1.1"= "Witnessed violence \n Experienced abuse"))+
+  scale_x_continuous(breaks = seq(0, 0.1,0.01))+
+  theme_light()
+```
+
+
+
+# 5 Discussion
+## Data
+The variables we used is from Canadian General Social Survey 2014. Upon clearing the data to apply Bayesian regression model, we have made some changes to the observations. First of all, the response variable "serious incident" is categorized into "violent incident" and "non-violent incident", which respectively have the value of 1 and 0. Then we have identified the explanatory variable for our issue of discussion, which is "witnessed violence between parents" and "experienced childhood assault". The two variables covers two types of maltreatment in childhood. 
+
+## Result
+From the Bayesian binary logistic regression model we have applied, figure \@ref(fig:six) and figure \@ref(fig:sev) contains the posterior probabilities given various childhood experiences. Figure \@ref(fig:six) shows the densities of parameter estimates, where the vertical line shows its point estimate, and light blue area is the 95% confidence interval. Both violence between parents and experienced childhood assault are explanatory toward the response since their credible interval does not include 0. And the estimators positively predicts the probability of a person being the victim of violent crimes as their point estimate and point interval are both positive. More specifically, witnessing violence between parents as a child increase the probability of being criminally victimized by 45%, and experiencing either physical or sexual assault will increase the probability by 83%. The curves in figure \@ref(fig:six) have very narrow shapes, meaning that the confidence interval is relatively small and that there is 95% of chance that the population falls within.
+
+Figure \@ref(fig:sev) further demonstrates the probability of a person experiencing violent crime. For an adult who had never experienced childhood maltreatment, the probability of them being a victim of violent crime is around 0.02. In contrary, an adult who was both a victim of childhood abuse and a witness of spousal violence, has a probability of 0.08 for being violently victimized. In general, both explanatory variables increases the probability of being violently victimized. However, the impact of being a direct victim of violence in childhood is more significant compared to witnessing violence between parents. The two width in figure \@ref(fig:sev) represents both 95% credibility intervals(thick line) and 68% credibility intervals(thin line). This gives us a rough idea of where the estimate lies.
+
+The findings in our study is significant for reevaluating the impact of childhood maltreatment. Over the years, studies has been done about childhood experience as a risk factor for criminal activities in the future. However, little has been done addressing childhood abuse victims are likely to become victims of violent crimes as an adult. 
+
+
+## Weakness and Future studies
+
+In the report, we have concluded that victimization in childhood increases the probabilities of being victimized towards violent crimes as an adult. However, we have encountered three main errors that might result in possible bias. 
+The General Social Survey, to begin with, has its limitations. Regardless of the error due to non-response, the refusal of some specific questions may also cause errors. The variables we have used, are all personal and sensitive information that some individuals may not feel comfortable discussing. We could assume a significant proportion of refusals is counted towards positive response. As a result, the distribution of our variables could be altered. 
+Secondly, our model design is by no means exhaustive. We have used Bayesian binary logistic regression model to predict response, yet our prior is non-informative. Kass and Wasserman (1996) stated: "Non-informative priors are formal representations of ignorance"(stat columbia). As we have little to know information of the priors, we have assumed it to be uniform so that it will have little to no impact on the posteriors distribution. Thus our result came largely from the dataset itself, making the model seemingly useless.
+Moreover, our conclusion merely indicates that childhood victimization increase the probability of experiencing violent crimes. Our result cannot explain the reason behind such phenomenon. 
+
+In future studies, we can further examine the model and develop a prior distribution that would be a better fit for the data. Also in a social aspect, it is important to find out the reason behind our findings. We could have more survey questions related to childhood victimization aspect and determine what directly caused such issue.
+
+
+\newpage
+
+# Appendix
+
+[1]"Only specific geographies were targeted for the oversample of immigrants and youth. For the oversample of immigrants, only the Census Metropolitan Areas of Montreal, Toronto and Vancouver were considered as separate strata. The remaining geographic areas of the ten provinces were grouped together to form the last stratum. For the oversample of youth, only the Census Metropolitan Areas of Halifax, Montreal, Ottawa, Toronto, Winnipeg, Calgary, Edmonton and Vancouver were covered by the frame and considered as separate strata. Also, for each geographic area, two strata were formed: one with the households including at least one immigrant between the age of 15 and 24 and one with the households including at least one nonimmigrant between the age of 15 and 24." (Statistics Canada)
+
+[2] "Separate frames were created for the oversample of immigrants and for the oversample of youth. For the oversample of immigrants, the survey frame created for the regular sample was used first. A flag from an administrative source identifying the households with at least one immigrant was then added and only households flagged as having at least one immigrant were kept on the frame. The same principle was used to create the frame for the oversample of youth, but in this case, the flag identified households with at least one person between the age of 15 and 24 years old. This frame was also stratified to separate households with at least one immigrant between the age of 15 and 24 years old from the households with at least one non-immigrant (born in Canada) between the ages of 15 and 24 years old."  (Statistics Canada)
+
+[3] Link to code: https://github.com/mackenziequ/regression/blob/main/r%20code
+
+# Reference
+
+
